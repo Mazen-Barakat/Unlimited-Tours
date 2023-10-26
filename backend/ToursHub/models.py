@@ -1,0 +1,75 @@
+from django.db import models
+
+# Create your models here.
+
+
+class Tours(models.Model):
+    tour_name = models.CharField(max_length=300)
+    slug = models.SlugField(max_length=300)
+    tour_overview = models.TextField()
+    tour_cost = models.IntegerField()
+    duration = models.IntegerField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return self.tour_name
+    
+    class Meta:
+        ordering = ['created_at']
+
+
+class Destinations(models.Model):
+    tour_destination = models.ForeignKey(
+        Tours, on_delete=models.CASCADE, related_name="destinations"
+    )
+    country = models.CharField(max_length=100)
+    provinces = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.country
+    
+    class Meta:
+        ordering = ['country', 'provinces', 'location']    
+
+
+class TourFacilitiesIncluded(models.Model):
+    tour_facility_included = models.ForeignKey(
+        Tours, on_delete=models.CASCADE, related_name="tour_facilities_included"
+    )
+    tour_facility = models.OneToOneField(
+        "TourFacilities", on_delete=models.CASCADE, related_name="tour_facilities"
+    )
+    description = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.description
+
+
+class TourFacilities(models.Model):
+    tour_facility = models.CharField(max_length=100)
+    icon = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.tour_facility
+
+
+class TourPrograms(models.Model):
+    tour = models.ForeignKey(Tours, on_delete=models.CASCADE, related_name="tour_programs")
+    title = models.CharField(max_length=100)
+    day = models.IntegerField()
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.title
+    
+    class Meta:
+        ordering = ['day']
+
+class Gallery(models.Model):
+    tour = models.ForeignKey(Tours, on_delete=models.CASCADE, related_name="gallery")
+    image = models.ImageField(upload_to='gallery')
