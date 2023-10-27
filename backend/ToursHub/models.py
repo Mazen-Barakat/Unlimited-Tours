@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 
@@ -21,6 +23,24 @@ class Tours(models.Model):
     class Meta:
         ordering = ['created_at']
 
+class Tourist(models.Model):
+    gender_choices = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+    ]
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="tourist",
+        primary_key=True
+    )
+    address = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
+    gender = models.CharField(max_length=1, choices=gender_choices, null=True, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.user.username
 
 class Destinations(models.Model):
     tour_destination = models.ForeignKey(
@@ -73,3 +93,30 @@ class TourPrograms(models.Model):
 class Gallery(models.Model):
     tour = models.ForeignKey(Tours, on_delete=models.CASCADE, related_name="gallery")
     image = models.ImageField(upload_to='gallery')
+
+
+class TourReviews(models.Model):
+    tour = models.ForeignKey(Tours, on_delete=models.CASCADE, related_name="tour_reviews")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_review"
+    )
+    review = models.TextField()
+    rating = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.user.username
+    
+    class Meta:
+        ordering = ['created_at']
+
+class ReviewReplies(models.Model):
+    tour_review = models.ForeignKey(TourReviews, on_delete=models.CASCADE, related_name="review_replies")
+    reply = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.tour_review
+    
+    class Meta:
+        ordering = ['created_at']

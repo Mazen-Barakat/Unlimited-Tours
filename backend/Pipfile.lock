@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1ab6c73c78ba0807eca2042b011d92522ccbd2dbdd9627bb1d570c5a60b22d63"
+            "sha256": "bfe649f473d292f247ab372560e491110d05a1a0248997be91cc9506ab59a23b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -247,6 +247,17 @@
             "index": "pypi",
             "version": "==4.2.0"
         },
+        "django-phonenumber-field": {
+            "extras": [
+                "phonenumberslite"
+            ],
+            "hashes": [
+                "sha256:16778f2717ea2aecc6178beb0d6bc431c78c6a8b0474e1fa8face040efeb6e9e",
+                "sha256:20c7c5c449e33eed5fd45ef8d3dc668faabaeff3277eddd1892b262d686ba381"
+            ],
+            "index": "pypi",
+            "version": "==7.2.0"
+        },
         "django-templated-mail": {
             "hashes": [
                 "sha256:8db807effebb42a532622e2d142dfd453dafcd0d7794c4c3332acb90656315f9",
@@ -314,6 +325,13 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==3.2.2"
+        },
+        "phonenumberslite": {
+            "hashes": [
+                "sha256:7c719e35ef551a895459382e9faf592f52647312dd90b543b06460aa0e1c49c4",
+                "sha256:cf6cf56c889c6787ec6b30b5791693f6dd678f633358f4aeea1fddf98d4cadcb"
+            ],
+            "version": "==8.13.23"
         },
         "pillow": {
             "hashes": [

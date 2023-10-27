@@ -9,3 +9,7 @@ admin.site.register(models.TourFacilitiesIncluded)
 admin.site.register(models.TourFacilities)
 admin.site.register(models.TourPrograms)
 admin.site.register(models.Gallery)
+admin.site.register(models.TourReviews)
+admin.site.register(models.ReviewReplies)
+admin.site.register(models.Tourist)
+
