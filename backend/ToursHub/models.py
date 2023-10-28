@@ -115,8 +115,45 @@ class ReviewReplies(models.Model):
     reply = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
-        return self.tour_review
     
     class Meta:
         ordering = ['created_at']
+
+class TourBooking(models.Model):
+    booking_status_choices = [
+        ('P', 'Pending'),
+        ('C', 'Confirmed'),
+        ('R', 'Rejected'),
+    ]
+
+    tour = models.ForeignKey(Tours, on_delete=models.CASCADE, related_name="tour_booking")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_booking"
+    )
+    total_cost = models.IntegerField()
+    booking_status = models.CharField(max_length=1, choices=booking_status_choices, default='P')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.user.username
+    
+    class Meta:
+        ordering = ['created_at']
+
+
+class BookingUsers(models.Model):
+    gender_choices = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+    ]
+
+    booking = models.ForeignKey(TourBooking, on_delete=models.CASCADE, related_name="booking_users")
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    phone_number = PhoneNumberField()
+    email = models.EmailField(null=True, blank=True)
+    age = models.IntegerField()
+    nationality = models.CharField(max_length=100)
+    nationality_id = models.CharField(max_length=100)
+    passport_number = models.CharField(max_length=100, null=True, blank=True)
+    gender = models.CharField(max_length=1, choices=gender_choices, null=True, blank=True)
