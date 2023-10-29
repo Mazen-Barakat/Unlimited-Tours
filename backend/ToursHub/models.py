@@ -1,13 +1,14 @@
 from django.db import models
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
+from django.utils.text import slugify
 
 # Create your models here.
 
 
 class Tours(models.Model):
-    tour_name = models.CharField(max_length=300)
-    slug = models.SlugField(max_length=300)
+    tour_title = models.CharField(max_length=300)
+    slug = models.SlugField(max_length=300, null=True, blank=True)
     tour_overview = models.TextField()
     tour_cost = models.IntegerField()
     duration = models.IntegerField()
@@ -16,10 +17,10 @@ class Tours(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
 
     def __str__(self) -> str:
         return self.tour_name
-    
     class Meta:
         ordering = ['created_at']
 
@@ -42,8 +43,9 @@ class Tourist(models.Model):
     def __str__(self) -> str:
         return self.user.username
 
+
 class Destinations(models.Model):
-    tour_destination = models.ForeignKey(
+    tour = models.ForeignKey(
         Tours, on_delete=models.CASCADE, related_name="destinations"
     )
     country = models.CharField(max_length=100)
@@ -51,14 +53,13 @@ class Destinations(models.Model):
     location = models.CharField(max_length=100)
 
     def __str__(self) -> str:
-        return self.country
-    
+        return self.tour.tour_name
     class Meta:
         ordering = ['country', 'provinces', 'location']    
 
 
 class TourFacilitiesIncluded(models.Model):
-    tour_facility_included = models.ForeignKey(
+    tour = models.ForeignKey(
         Tours, on_delete=models.CASCADE, related_name="tour_facilities_included"
     )
     tour_facility = models.OneToOneField(
@@ -67,8 +68,8 @@ class TourFacilitiesIncluded(models.Model):
     description = models.CharField(max_length=100)
 
     def __str__(self) -> str:
-        return self.description
-
+        return self.tour.tour_name
+    
 
 class TourFacilities(models.Model):
     tour_facility = models.CharField(max_length=100)
@@ -77,7 +78,6 @@ class TourFacilities(models.Model):
     def __str__(self) -> str:
         return self.tour_facility
 
-
 class TourPrograms(models.Model):
     tour = models.ForeignKey(Tours, on_delete=models.CASCADE, related_name="tour_programs")
     title = models.CharField(max_length=100)
@@ -85,14 +85,17 @@ class TourPrograms(models.Model):
     description = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.title
-    
+        return self.tour.tour_name
+
     class Meta:
         ordering = ['day']
 
 class Gallery(models.Model):
     tour = models.ForeignKey(Tours, on_delete=models.CASCADE, related_name="gallery")
     image = models.ImageField(upload_to='gallery')
+
+    def __str__(self) -> str:
+        return self.tour.tour_name
 
 
 class TourReviews(models.Model):
@@ -105,8 +108,8 @@ class TourReviews(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.user.username
-    
+        return self.tour.tour_name
+
     class Meta:
         ordering = ['created_at']
 
@@ -114,7 +117,6 @@ class ReviewReplies(models.Model):
     tour_review = models.ForeignKey(TourReviews, on_delete=models.CASCADE, related_name="review_replies")
     reply = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
     
     class Meta:
         ordering = ['created_at']
@@ -135,8 +137,8 @@ class TourBooking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.user.username
-    
+        return self.tour.tour_name
+
     class Meta:
         ordering = ['created_at']
 
@@ -150,7 +152,7 @@ class BookingUsers(models.Model):
     booking = models.ForeignKey(TourBooking, on_delete=models.CASCADE, related_name="booking_users")
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    phone_number = PhoneNumberField()
+    phone_number = PhoneNumberField(null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     age = models.IntegerField()
     nationality = models.CharField(max_length=100)
