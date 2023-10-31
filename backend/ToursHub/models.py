@@ -20,7 +20,7 @@ class Tours(models.Model):
     
 
     def __str__(self) -> str:
-        return self.tour_name
+        return self.tour_title
     class Meta:
         ordering = ['created_at']
 
@@ -53,7 +53,7 @@ class Destinations(models.Model):
     location = models.CharField(max_length=100)
 
     def __str__(self) -> str:
-        return self.tour.tour_name
+        return self.tour.tour_title
     class Meta:
         ordering = ['country', 'provinces', 'location']    
 
@@ -68,7 +68,7 @@ class TourFacilitiesIncluded(models.Model):
     description = models.CharField(max_length=100)
 
     def __str__(self) -> str:
-        return self.tour.tour_name
+        return self.tour.tour_title
     
 
 class TourFacilities(models.Model):
@@ -85,7 +85,7 @@ class TourPrograms(models.Model):
     description = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.tour.tour_name
+        return self.tour.tour_title
 
     class Meta:
         ordering = ['day']
@@ -95,7 +95,7 @@ class Gallery(models.Model):
     image = models.ImageField(upload_to='gallery')
 
     def __str__(self) -> str:
-        return self.tour.tour_name
+        return self.tour.tour_title
 
 
 class TourReviews(models.Model):
@@ -108,7 +108,7 @@ class TourReviews(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.tour.tour_name
+        return self.tour.tour_title
 
     class Meta:
         ordering = ['created_at']
@@ -137,7 +137,7 @@ class TourBooking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.tour.tour_name
+        return self.tour.tour_title
 
     class Meta:
         ordering = ['created_at']
