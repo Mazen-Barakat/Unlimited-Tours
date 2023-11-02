@@ -105,3 +105,55 @@ class GallerySerializer(serializers.ModelSerializer):
         return Gallery.objects.create(
             tour_id=self.context.get("tour_id"), **validated_data
         )
+
+
+class ReviewRepliesSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    tour_review = serializers.StringRelatedField(read_only=True)
+    class Meta:
+        model = ReviewReplies
+        fields = ["id", "tour_review", "reply", "created_at"]
+
+class TourReviewsSerializer(serializers.ModelSerializer):
+    review_replies = ReviewRepliesSerializer(many=True, read_only=True)
+    id = serializers.IntegerField(read_only=True)
+    user = serializers.StringRelatedField(read_only=True)
+    tour = serializers.StringRelatedField(read_only=True)
+    class Meta:
+        model = TourReviews
+        fields = ["id",'user','tour', "review", "rating", "created_at", "review_replies"]
+    
+    def create(self, validated_data):
+        return TourReviews.objects.create(
+            tour_id=self.context.get("tour_id"),
+            user=self.context.get("user"),
+            **validated_data
+        )
+    
+    def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+        instance.save()
+        return instance
+
+
+class TourReviewsAdminSerializer(serializers.ModelSerializer):
+    review_replies = ReviewRepliesSerializer(many=True)
+    id = serializers.IntegerField(read_only=True)
+    user = serializers.StringRelatedField(read_only=True)
+    tour = serializers.StringRelatedField(read_only=True)
+    class Meta:
+        model = TourReviews
+        fields = ["id",'user' ,'tour', "review", "rating", "created_at", "review_replies"]
+
+    def update(self, instance, validated_data):
+        review_replies_data = validated_data.pop("review_replies")
+        instance = super().update(instance, validated_data)
+        review_replies = []
+        for reply_data in review_replies_data:
+            reply, created = ReviewReplies.objects.get_or_create(
+                tour_review=instance,
+                defaults={"reply": reply_data["reply"]}
+            )
+            review_replies.append(reply)
+        instance.review_replies.set(review_replies)
+        return instance
