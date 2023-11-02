@@ -131,20 +131,20 @@ class TourReviewsViewSet(ModelViewSet):
         )
 
         if not self.request.user.is_superuser:
-            queryset = queryset.filter(tour__is_active=True)
-            if not queryset.exists():
+            queryset = queryset.filter(tour__is_active=False)
+            if queryset.exists():
                 return Response(
                     {"detail": "You can't review an inactive tour."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
+        serializer_context = {"tour_id": tour_id, "user": user}
+
         if request.method == "GET":
             serializer = TourReviewsSerializer(queryset, many=True)
             return Response(serializer.data)
 
-        serializer_context = {"tour_id": tour_id, "user": user}
-
-        if request.method in ["POST", "PUT", "PATCH"]:
+        elif request.method in ["POST", "PUT", "PATCH"]:
             # Try to get an existing review, or create one if it doesn't exist
             review = TourReviews.objects.filter(tour_id=tour_id, user=user).first()
 
@@ -177,3 +177,32 @@ class TourReviewsViewSet(ModelViewSet):
                 review.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class TourProgramsViewSet(ModelViewSet):
+    serializer_class = TourProgramsSerializer
+
+    def get_queryset(self):
+        queryset = TourPrograms.objects.select_related("tour").filter(
+            tour_id=self.kwargs["tours_pk"]
+        )
+        if not self.request.user.is_superuser:
+            queryset = queryset.filter(tour__is_active=True)
+        return queryset
+
+    def get_serializer_context(self):
+        return super().get_serializer_context() | {"tour_id": self.kwargs["tours_pk"]}
+
+    permission_classes = [
+        permissions.AllowAny
+    ]  # Default permission for non-admin actions
+
+    def get_permissions(self):
+        if not self.request.user.is_superuser and self.action in [
+            "create",
+            "update",
+            "partial_update",
+            "destroy",
+        ]:
+            return [permissions.IsAdminUser()]
+        return super().get_permissions()

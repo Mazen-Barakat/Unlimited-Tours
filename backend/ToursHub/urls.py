@@ -7,6 +7,7 @@ router.register('tours', ToursViewSet, basename='tours')
 tour_router = routers.NestedDefaultRouter(router, r'tours', lookup='tours')
 tour_router.register(r'gallery', GalleryViewSet, basename='tours-gallery')
 tour_router.register(r'reviews', TourReviewsViewSet, basename='tours-reviews')
+tour_router.register(r'program', TourProgramsViewSet, basename='tours-program')
 
 
 urlpatterns = [
