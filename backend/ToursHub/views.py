@@ -114,6 +114,24 @@ class TourReviewsViewSet(ModelViewSet):
             return [permissions.IsAdminUser()]
         return super().get_permissions()
 
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_queryset(), many=True)
+        total_reviews = len(serializer.data)
+        average_rating = (
+            sum(review["rating"] for review in serializer.data) / total_reviews
+            if total_reviews > 0
+            else 0
+        )
+
+        return Response(
+            {
+                "reviews_count": total_reviews,
+                "total_rating": average_rating,
+                "reviews": serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
+
     @action(
         detail=False,
         methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
@@ -184,6 +202,35 @@ class TourProgramsViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = TourPrograms.objects.select_related("tour").filter(
+            tour_id=self.kwargs["tours_pk"]
+        )
+        if not self.request.user.is_superuser:
+            queryset = queryset.filter(tour__is_active=True)
+        return queryset
+
+    def get_serializer_context(self):
+        return super().get_serializer_context() | {"tour_id": self.kwargs["tours_pk"]}
+
+    permission_classes = [
+        permissions.AllowAny
+    ]  # Default permission for non-admin actions
+
+    def get_permissions(self):
+        if not self.request.user.is_superuser and self.action in [
+            "create",
+            "update",
+            "partial_update",
+            "destroy",
+        ]:
+            return [permissions.IsAdminUser()]
+        return super().get_permissions()
+
+
+class TourFacilitiesViewSet(ModelViewSet):
+    serializer_class = TourFacilitiesSerializer
+
+    def get_queryset(self):
+        queryset = TourFacilities.objects.select_related("tour").filter(
             tour_id=self.kwargs["tours_pk"]
         )
         if not self.request.user.is_superuser:

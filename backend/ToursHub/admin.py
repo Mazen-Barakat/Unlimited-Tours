@@ -49,40 +49,41 @@ class DestinationsAdmin(admin.ModelAdmin):
     search_fields = ("country", "provinces", "location")
 
 
-@admin.register(models.TourFacilitiesIncluded)
-class TourFacilitiesIncludedAdmin(admin.ModelAdmin):
+@admin.register(models.TourFacilities)
+class TourFacilitiesAdmin(admin.ModelAdmin):
     list_display = ("tour", "tour_facility")
+    list_filter = ("tour", "tour_facility")
+    search_fields = ("tour", "tour_facility")
 
     def get_queryset(self, request):
         return (
             super()
             .get_queryset(request)
-            .select_related("tour", "tour_facility")
+            .select_related("tour")
             .only("tour", "tour_facility")
         )
 
-
-@admin.register(models.TourFacilities)
-class TourFacilitiesAdmin(admin.ModelAdmin):
-    list_display = ("tour_facility",)
 
 @admin.register(models.TourPrograms)
 class TourProgramsAdmin(admin.ModelAdmin):
     list_display = ("tour", "title", "day")
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-        return super().get_queryset(request).select_related("tour").only("tour", "title", "day")
-
-@admin.register(models.Gallery)
-class GalleryAdmin(admin.ModelAdmin):
-    list_display = ("tour", "image")
-    
-    def get_queryset(self, request):
         return (
             super()
             .get_queryset(request)
             .select_related("tour")
-            .only("tour", "image")
+            .only("tour", "title", "day")
+        )
+
+
+@admin.register(models.Gallery)
+class GalleryAdmin(admin.ModelAdmin):
+    list_display = ("tour", "image")
+
+    def get_queryset(self, request):
+        return (
+            super().get_queryset(request).select_related("tour").only("tour", "image")
         )
 
 
@@ -93,27 +94,48 @@ class TourReviewsAdmin(admin.ModelAdmin):
     search_fields = ("tour", "review")
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("user", "tour").only("tour", "user", "rating")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("user", "tour")
+            .only("tour", "user", "rating")
+        )
 
 
 @admin.register(models.ReviewReplies)
 class ReviewRepliesAdmin(admin.ModelAdmin):
     list_display = ("tour_review", "reply")
 
-    
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("tour_review").only("tour_review", "reply")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("tour_review")
+            .only("tour_review", "reply")
+        )
 
 
 @admin.register(models.BookingUsers)
 class BookingUsersAdmin(admin.ModelAdmin):
-    list_display = ('booking_id',"booking__tour", "first_name", "last_name", "email", "phone_number")
-    
+    list_display = (
+        "booking_id",
+        "booking__tour",
+        "first_name",
+        "last_name",
+        "email",
+        "phone_number",
+    )
+
     def booking__tour(self, obj):
         return obj.booking.tour
-    
+
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("booking", "booking__tour").only("booking", "first_name", "last_name", "email", "phone_number")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("booking", "booking__tour")
+            .only("booking", "first_name", "last_name", "email", "phone_number")
+        )
 
 
 @admin.register(models.TourBooking)
@@ -122,4 +144,9 @@ class TourBookingAdmin(admin.ModelAdmin):
     search_fields = ("tour", "user", "booking_status")
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-        return super().get_queryset(request).select_related("tour", "user").only("tour__tour_title", "user__username", "booking_status")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("tour", "user")
+            .only("tour__tour_title", "user__username", "booking_status")
+        )

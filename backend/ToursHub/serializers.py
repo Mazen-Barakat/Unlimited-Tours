@@ -194,3 +194,17 @@ class TourProgramsSerializer(serializers.ModelSerializer):
         return TourPrograms.objects.create(
             tour_id=self.context.get("tour_id"), **validated_data
         )
+
+
+class TourFacilitiesSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    tour = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = TourFacilities
+        fields = ["id", "tour", "tour_facility", "icon", "description"]
+
+    def create(self, validated_data):
+        return TourFacilities.objects.create(
+            tour_id=self.context.get("tour_id"), **validated_data
+        )
