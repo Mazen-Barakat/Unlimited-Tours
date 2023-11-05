@@ -253,3 +253,28 @@ class TourFacilitiesViewSet(ModelViewSet):
         ]:
             return [permissions.IsAdminUser()]
         return super().get_permissions()
+
+
+class TouristViewSet(ModelViewSet):
+    queryset = Tourist.objects.select_related("user").all()
+    serializer_class = TouristSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    @action(
+        detail=False,
+        methods=["GET", "PUT"],
+        permission_classes=[permissions.IsAuthenticated],
+        url_path="me",
+    )
+    def me(self, request):
+        (tourist, created) = Tourist.objects.select_related("user").get_or_create(
+            user=request.user
+        )
+        if request.method == "GET":
+            serializer = self.get_serializer(tourist)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        elif request.method == "PUT":
+            serializer = self.get_serializer(tourist, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)

@@ -208,3 +208,21 @@ class TourFacilitiesSerializer(serializers.ModelSerializer):
         return TourFacilities.objects.create(
             tour_id=self.context.get("tour_id"), **validated_data
         )
+
+
+class TouristSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(read_only=True)
+    username = serializers.CharField(source="user.username", read_only=True)
+
+    class Meta:
+        model = Tourist
+        fields = [
+            "user_id",
+            "username",
+            "about",
+            "address",
+            "city",
+            "country",
+            "gender",
+            "birth_date",
+        ]
