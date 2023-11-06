@@ -278,3 +278,36 @@ class TouristViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class TourBookingViewSet(ModelViewSet):
+    serializer_class = TourBookingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = (
+            TourBooking.objects.select_related("tour", "user")
+            .only(
+                "id",
+                "tour__id",
+                "tour__tour_title",
+                "tour__is_active",
+                "user__id",
+                "user__username",
+                "booking_status",
+                "total_cost",
+                "created_at",
+            )
+            .prefetch_related("booking_users")
+            .filter(tour_id=self.kwargs["tours_pk"])
+        )
+        if not self.request.user.is_superuser:
+            queryset = queryset.filter(tour__is_active=True, user=self.request.user)
+        return queryset
+
+    def get_serializer_context(self):
+        return (
+            super().get_serializer_context()
+            | {"tour_id": self.kwargs["tours_pk"]}
+            | {"user": self.request.user}
+        )
