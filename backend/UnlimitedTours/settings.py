@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'Core',
     'ToursHub',
+    'BlogsHub',
 ]
 
 MIDDLEWARE = [
