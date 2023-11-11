@@ -22,9 +22,9 @@ from django.urls import path,include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', include('BlogsHub.urls')),
+    path('blogs-hub/', include('BlogsHub.urls')),
     path('', include('Core.urls')),
-    path('', include('ToursHub.urls')),
+    path('tours-hub/', include('ToursHub.urls')),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     path('__debug__/', include(debug_toolbar.urls)),

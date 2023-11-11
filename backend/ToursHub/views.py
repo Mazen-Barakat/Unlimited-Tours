@@ -134,7 +134,7 @@ class TourReviewsViewSet(ModelViewSet):
 
     @action(
         detail=False,
-        methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+        methods=["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
         permission_classes=[permissions.IsAuthenticated],
         url_path="your-review",
     )
@@ -149,18 +149,18 @@ class TourReviewsViewSet(ModelViewSet):
         )
 
         if not self.request.user.is_superuser:
-            queryset = queryset.filter(tour__is_active=False)
-            if queryset.exists():
+            queryset = queryset.filter(tour__is_active=True)
+            if not queryset.exists():
                 return Response(
                     {"detail": "You can't review an inactive tour."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
         serializer_context = {"tour_id": tour_id, "user": user}
-
-        if request.method == "GET":
-            serializer = TourReviewsSerializer(queryset, many=True)
-            return Response(serializer.data)
+        
+        if request.method in ["GET", "HEAD", "OPTIONS"]:
+            serializer = TourReviewsSerializer(queryset, many=True, context=serializer_context)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif request.method in ["POST", "PUT", "PATCH"]:
             # Try to get an existing review, or create one if it doesn't exist
