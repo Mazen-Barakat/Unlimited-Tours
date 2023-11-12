@@ -184,3 +184,31 @@ class CommentsViewSet(ModelViewSet):
         elif self.action in ["update", "partial_update", "destroy"]:
             self.permission_classes = [IsCommentAuthorOrAdmin]
         return super(CommentsViewSet, self).get_permissions()
+
+
+class BlogGalleryViewSet(ModelViewSet):
+    serializer_class = BlogGallerySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        blog_id = self.kwargs.get("blogs_pk") or self.kwargs.get("my_blogs_pk")
+        if self.kwargs.get("blogs_pk"):
+            return (
+                BlogGallery.objects.select_related("blog", "blog__author")
+                .only("id", "blog__id", "blog__title", "image", "blog__author__id")
+                .filter(blog__id=blog_id)
+            )
+        else:
+            return (
+                BlogGallery.objects.select_related("blog", "blog__author")
+                .only("id", "blog__id", "blog__title", "image", "blog__author__id")
+                .filter(blog__id=blog_id, blog__author=self.request.user)
+            )
+
+    def get_serializer_context(self):
+        return super().get_serializer_context() | {"request": self.request}
+
+    def get_permissions(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return [IsAuthorOrAdmin()]
+        return super(BlogGalleryViewSet, self).get_permissions()

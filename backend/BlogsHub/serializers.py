@@ -104,6 +104,7 @@ class BlogsLikesSerializer(serializers.ModelSerializer):
 class MyBlogsLikesSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     author = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Likes
         fields = [
@@ -118,3 +119,17 @@ class MyBlogsLikesSerializer(serializers.ModelSerializer):
             blog=self.context.get("blog"),
             **validated_data
         )
+
+
+class BlogGallerySerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = BlogGallery
+        fields = [
+            "id",
+            "image",
+        ]
+
+    def create(self, validated_data):
+        blog_pk = self.context["view"].kwargs.get("my_blogs_pk")
+        return BlogGallery.objects.create(blog_id=blog_pk, **validated_data)

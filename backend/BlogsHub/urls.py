@@ -8,9 +8,11 @@ router.register("my-blogs", MyBlogsViewSet, basename="my-blogs")
 
 blogs_router = routers.NestedDefaultRouter(router, r"blogs", lookup="blogs")
 blogs_router.register(r"comments", CommentsViewSet, basename="blogs-comments")
+blogs_router.register(r"gallery", BlogGalleryViewSet, basename="blogs-gallery")
 
 my_blogs_router = routers.NestedDefaultRouter(router, r"my-blogs", lookup="my_blogs")
 my_blogs_router.register(r"comments", CommentsViewSet, basename="my-blogs-comments")
+my_blogs_router.register(r"gallery", BlogGalleryViewSet, basename="my-blogs-gallery")
 
 urlpatterns = [
     path("", include(router.urls)),

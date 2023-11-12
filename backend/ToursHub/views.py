@@ -145,16 +145,8 @@ class TourReviewsViewSet(ModelViewSet):
         queryset = (
             TourReviews.objects.select_related("tour", "user")
             .prefetch_related("review_replies")
-            .filter(user=user, tour_id=tour_id)
+            .filter(user=user, tour_id=tour_id).exclude(tour__is_active=False)
         )
-
-        if not self.request.user.is_superuser:
-            queryset = queryset.filter(tour__is_active=True)
-            if not queryset.exists():
-                return Response(
-                    {"detail": "You can't review an inactive tour."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
 
         serializer_context = {"tour_id": tour_id, "user": user}
         
@@ -165,6 +157,12 @@ class TourReviewsViewSet(ModelViewSet):
         elif request.method in ["POST", "PUT", "PATCH"]:
             # Try to get an existing review, or create one if it doesn't exist
             review = TourReviews.objects.filter(tour_id=tour_id, user=user).first()
+
+            if review.tour.is_active == False:
+                return Response(
+                    {"detail": "This tour is not active anymore."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
             if request.method == "POST":
                 if review:
