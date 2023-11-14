@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'debug_toolbar',
+    'django_filters',
     'phonenumber_field',
     'rest_framework',
     'djoser',
@@ -94,7 +95,7 @@ WSGI_APPLICATION = "UnlimitedTours.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'unlimitedtours',
+        'NAME': 'unlimitedtours1',
         'HOST': 'localhost',
         'USER': 'root',
         'PASSWORD': 'elms2023@O6U'

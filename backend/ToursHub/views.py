@@ -3,7 +3,8 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from .models import *
 from .serializers import *
 from rest_framework import permissions
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,11 +13,16 @@ from django.shortcuts import get_object_or_404
 
 # Create your views here.
 class ToursViewSet(ModelViewSet):
-    filter_backends = [SearchFilter]
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     search_fields = ["tour_title", "tour_overview"]
+    filterset_fields = ["tour_type"]
 
     def get_queryset(self):
-        queryset = Tours.objects.prefetch_related("destinations").all()
+        queryset = (
+            Tours.objects.prefetch_related("destinations")
+            .select_related("tour_cost")
+            .all()
+        )
         if not self.request.user.is_superuser:
             queryset = queryset.filter(is_active=True)
         return queryset
@@ -145,13 +151,16 @@ class TourReviewsViewSet(ModelViewSet):
         queryset = (
             TourReviews.objects.select_related("tour", "user")
             .prefetch_related("review_replies")
-            .filter(user=user, tour_id=tour_id).exclude(tour__is_active=False)
+            .filter(user=user, tour_id=tour_id)
+            .exclude(tour__is_active=False)
         )
 
         serializer_context = {"tour_id": tour_id, "user": user}
-        
+
         if request.method in ["GET", "HEAD", "OPTIONS"]:
-            serializer = TourReviewsSerializer(queryset, many=True, context=serializer_context)
+            serializer = TourReviewsSerializer(
+                queryset, many=True, context=serializer_context
+            )
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif request.method in ["POST", "PUT", "PATCH"]:
@@ -278,34 +287,34 @@ class TouristViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class TourBookingViewSet(ModelViewSet):
-    serializer_class = TourBookingSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class TourBookingViewSet(ModelViewSet):
+#     serializer_class = TourBookingSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
-    def get_queryset(self):
-        queryset = (
-            TourBooking.objects.select_related("tour", "user")
-            .only(
-                "id",
-                "tour__id",
-                "tour__tour_title",
-                "tour__is_active",
-                "user__id",
-                "user__username",
-                "booking_status",
-                "total_cost",
-                "created_at",
-            )
-            .prefetch_related("booking_users")
-            .filter(tour_id=self.kwargs["tours_pk"])
-        )
-        if not self.request.user.is_superuser:
-            queryset = queryset.filter(tour__is_active=True, user=self.request.user)
-        return queryset
+#     def get_queryset(self):
+#         queryset = (
+#             TourBooking.objects.select_related("tour", "user")
+#             .only(
+#                 "id",
+#                 "tour__id",
+#                 "tour__tour_title",
+#                 "tour__is_active",
+#                 "user__id",
+#                 "user__username",
+#                 "booking_status",
+#                 "total_cost",
+#                 "created_at",
+#             )
+#             .prefetch_related("booking_users")
+#             .filter(tour_id=self.kwargs["tours_pk"])
+#         )
+#         if not self.request.user.is_superuser:
+#             queryset = queryset.filter(tour__is_active=True, user=self.request.user)
+#         return queryset
 
-    def get_serializer_context(self):
-        return (
-            super().get_serializer_context()
-            | {"tour_id": self.kwargs["tours_pk"]}
-            | {"user": self.request.user}
-        )
+#     def get_serializer_context(self):
+#         return (
+#             super().get_serializer_context()
+#             | {"tour_id": self.kwargs["tours_pk"]}
+#             | {"user": self.request.user}
+#         )

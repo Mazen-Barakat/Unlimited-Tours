@@ -12,7 +12,6 @@ from . import models
 class ToursAdmin(admin.ModelAdmin):
     list_display = (
         "tour_title",
-        "tour_cost",
         "duration",
         "is_active",
         "created_at",
@@ -20,7 +19,7 @@ class ToursAdmin(admin.ModelAdmin):
     )
     list_filter = ("is_active", "created_at", "updated_at")
     search_fields = ("tour_title", "tour_overview")
-    list_editable = ("tour_cost", "duration", "is_active")
+    list_editable = ( "duration", "is_active")
     prepopulated_fields = {"slug": ("tour_title",)}
 
 
@@ -44,9 +43,9 @@ class TouristAdmin(admin.ModelAdmin):
 
 @admin.register(models.Destinations)
 class DestinationsAdmin(admin.ModelAdmin):
-    list_display = ("country", "provinces", "location")
-    list_filter = ("country", "provinces", "location")
-    search_fields = ("country", "provinces", "location")
+    list_display = ("country", "state", "location")
+    list_filter = ("country", "state", "location")
+    search_fields = ("country", "state", "location")
 
 
 @admin.register(models.TourFacilities)
@@ -114,28 +113,7 @@ class ReviewRepliesAdmin(admin.ModelAdmin):
             .only("tour_review", "reply")
         )
 
-
-@admin.register(models.BookingUsers)
-class BookingUsersAdmin(admin.ModelAdmin):
-    list_display = (
-        "booking_id",
-        "booking__tour",
-        "first_name",
-        "last_name",
-        "email",
-        "phone_number",
-    )
-
-    def booking__tour(self, obj):
-        return obj.booking.tour
-
-    def get_queryset(self, request):
-        return (
-            super()
-            .get_queryset(request)
-            .select_related("booking", "booking__tour")
-            .only("booking", "first_name", "last_name", "email", "phone_number")
-        )
+admin.site.register(models.TourCost)
 
 
 @admin.register(models.TourBooking)

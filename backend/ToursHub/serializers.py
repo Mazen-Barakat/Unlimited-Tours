@@ -11,8 +11,21 @@ class DestinationsSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "country",
-            "provinces",
+            "state",
             "location",
+        ]
+
+
+class TourCostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TourCost
+        fields = [
+            "price_currency",
+            "adult_cost",
+            "child_cost",
+            "infant_cost",
+            "discount",
+            "tax",
         ]
 
 
@@ -31,6 +44,7 @@ class TourListSerializer(serializers.ModelSerializer):
 
 class ToursSerializer(serializers.ModelSerializer):
     destinations = DestinationsSerializer(many=True, read_only=True)
+    tour_cost = TourCostSerializer(read_only=True)
 
     class Meta:
         model = Tours
@@ -38,9 +52,11 @@ class ToursSerializer(serializers.ModelSerializer):
             "id",
             "tour_title",
             "slug",
+            "tour_main_image",
             "tour_overview",
             "destinations",
             "tour_cost",
+            "people_count",
             "duration",
             "start_date",
             "end_date",
@@ -51,17 +67,22 @@ class ToursSerializer(serializers.ModelSerializer):
 
 
 class ToursAdminSerializer(serializers.ModelSerializer):
-    destinations = DestinationsSerializer(many=True)
+    destinations = DestinationsSerializer(many=True, required=False)
+    tour_cost = TourCostSerializer()
+    tour_main_image = serializers.ImageField(required=False)
 
     class Meta:
         model = Tours
         fields = [
             "id",
             "tour_title",
+            "tour_main_image",
             "tour_overview",
             "destinations",
             "tour_cost",
+            "people_count",
             "duration",
+            "tour_type",
             "start_date",
             "end_date",
             "is_active",
@@ -70,29 +91,32 @@ class ToursAdminSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         with transaction.atomic():
             destinations_data = validated_data.pop("destinations")
+            tour_cost_data = validated_data.pop("tour_cost")
             tour = super().create(validated_data)
+            TourCost.objects.create(tour=tour, **tour_cost_data)
             for destination_data in destinations_data:
                 Destinations.objects.create(tour=tour, **destination_data)
             return tour
 
     def update(self, instance, validated_data):
         with transaction.atomic():
-            destinations_data = validated_data.pop("destinations")
+            destinations_data = validated_data.pop("destinations", [])
+            tour_cost_data = validated_data.pop("tour_cost", {})
             destinations = instance.destinations.all()
             destinations = list(destinations)
             instance = super().update(instance, validated_data)
+            TourCost.objects.filter(tour=instance).update(**tour_cost_data)
             for destination_data in destinations_data:
                 destination = destinations.pop(0)
                 destination.country = destination_data.get(
                     "country", destination.country
                 )
-                destination.provinces = destination_data.get(
-                    "provinces", destination.provinces
-                )
+                destination.state = destination_data.get("state", destination.state)
                 destination.location = destination_data.get(
                     "location", destination.location
                 )
                 destination.save()
+
             return instance
 
 
@@ -227,113 +251,113 @@ class TouristSerializer(serializers.ModelSerializer):
         ]
 
 
-class BookingUsersSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    class Meta:
-        model = BookingUsers
-        fields = [
-            "id",
-            "first_name",
-            "last_name",
-            "phone_number",
-            "email",
-            "age",
-            "gender",
-            "nationality",
-            "nationality_id",
-            "passport_number",
-        ]
+# class BookingUsersSerializer(serializers.ModelSerializer):
+#     id = serializers.IntegerField(read_only=True)
+#     class Meta:
+#         model = BookingUsers
+#         fields = [
+#             "id",
+#             "first_name",
+#             "last_name",
+#             "phone_number",
+#             "email",
+#             "age",
+#             "gender",
+#             "nationality",
+#             "nationality_id",
+#             "passport_number",
+#         ]
 
 
-class TourBookingSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    tour = serializers.StringRelatedField(read_only=True)
-    username = serializers.StringRelatedField(source="user.username", read_only=True)
-    booking_users = BookingUsersSerializer(many=True)
+# class TourBookingSerializer(serializers.ModelSerializer):
+#     id = serializers.IntegerField(read_only=True)
+#     tour = serializers.StringRelatedField(read_only=True)
+#     username = serializers.StringRelatedField(source="user.username", read_only=True)
+#     booking_users = BookingUsersSerializer(many=True)
 
-    class Meta:
-        model = TourBooking
-        fields = [
-            "id",
-            "tour",
-            "username",
-            "booking_status",
-            "total_cost",
-            "created_at",
-            "booking_users",
-        ]
+#     class Meta:
+#         model = TourBooking
+#         fields = [
+#             "id",
+#             "tour",
+#             "username",
+#             "booking_status",
+#             "total_cost",
+#             "created_at",
+#             "booking_users",
+#         ]
 
-    def create(self, validated_data):
-        with transaction.atomic():
-            booking_users_data = validated_data.pop("booking_users")
-            booking = TourBooking.objects.create(
-                tour_id=self.context.get("tour_id"),
-                user=self.context.get("user"),
-                **validated_data
-            )
-            booking_users = []
-            for booking_user_data in booking_users_data:
-                booking_user = BookingUsers.objects.create(
-                    booking=booking, **booking_user_data
-                )
-                booking_users.append(booking_user)
-            booking.booking_users.set(booking_users)
-            return booking
+#     def create(self, validated_data):
+#         with transaction.atomic():
+#             booking_users_data = validated_data.pop("booking_users")
+#             booking = TourBooking.objects.create(
+#                 tour_id=self.context.get("tour_id"),
+#                 user=self.context.get("user"),
+#                 **validated_data
+#             )
+#             booking_users = []
+#             for booking_user_data in booking_users_data:
+#                 booking_user = BookingUsers.objects.create(
+#                     booking=booking, **booking_user_data
+#                 )
+#                 booking_users.append(booking_user)
+#             booking.booking_users.set(booking_users)
+#             return booking
 
-    def update(self, instance, validated_data):
-        booking_users_data = validated_data.pop("booking_users")
+#     def update(self, instance, validated_data):
+#         booking_users_data = validated_data.pop("booking_users")
 
-        with transaction.atomic():
-            # Get the existing booking users related to the instance
-            existing_booking_users = instance.booking_users.all()
-            existing_booking_users_mapping = {
-                booking_user.id: booking_user for booking_user in existing_booking_users
-            }
+#         with transaction.atomic():
+#             # Get the existing booking users related to the instance
+#             existing_booking_users = instance.booking_users.all()
+#             existing_booking_users_mapping = {
+#                 booking_user.id: booking_user for booking_user in existing_booking_users
+#             }
 
-            # Update existing booking users or create new ones
-            updated_booking_users = []
-            for booking_user_data in booking_users_data:
-                booking_user_id = booking_user_data.get("id")
-                if booking_user_id:
-                    # Update existing booking user
-                    if booking_user_id in existing_booking_users_mapping:
-                        booking_user = existing_booking_users_mapping.pop(
-                            booking_user_id
-                        )
-                    else:
-                        # Handle the case where the ID doesn't match any existing booking user
-                        continue
-                else:
-                    # Create a new booking user
-                    booking_user = BookingUsers(booking=instance)
-                # Update the fields
-                for attr in [
-                    "first_name",
-                    "last_name",
-                    "phone_number",
-                    "email",
-                    "age",
-                    "gender",
-                    "nationality",
-                    "nationality_id",
-                    "passport_number",
-                ]:
-                    setattr(
-                        booking_user,
-                        attr,
-                        booking_user_data.get(attr, getattr(booking_user, attr)),
-                    )
-                booking_user.save()
-                updated_booking_users.append(booking_user)
+#             # Update existing booking users or create new ones
+#             updated_booking_users = []
+#             for booking_user_data in booking_users_data:
+#                 booking_user_id = booking_user_data.get("id")
+#                 if booking_user_id:
+#                     # Update existing booking user
+#                     if booking_user_id in existing_booking_users_mapping:
+#                         booking_user = existing_booking_users_mapping.pop(
+#                             booking_user_id
+#                         )
+#                     else:
+#                         # Handle the case where the ID doesn't match any existing booking user
+#                         continue
+#                 else:
+#                     # Create a new booking user
+#                     booking_user = BookingUsers(booking=instance)
+#                 # Update the fields
+#                 for attr in [
+#                     "first_name",
+#                     "last_name",
+#                     "phone_number",
+#                     "email",
+#                     "age",
+#                     "gender",
+#                     "nationality",
+#                     "nationality_id",
+#                     "passport_number",
+#                 ]:
+#                     setattr(
+#                         booking_user,
+#                         attr,
+#                         booking_user_data.get(attr, getattr(booking_user, attr)),
+#                     )
+#                 booking_user.save()
+#                 updated_booking_users.append(booking_user)
 
-            # Delete any remaining existing booking users
-            for booking_user in existing_booking_users_mapping.values():
-                booking_user.delete()
+#             # Delete any remaining existing booking users
+#             for booking_user in existing_booking_users_mapping.values():
+#                 booking_user.delete()
 
-            # Update the instance with other validated data
-            instance = super().update(instance, validated_data)
+#             # Update the instance with other validated data
+#             instance = super().update(instance, validated_data)
 
-            # Set the booking users relationship for the instance
-            instance.booking_users.set(updated_booking_users)
+#             # Set the booking users relationship for the instance
+#             instance.booking_users.set(updated_booking_users)
 
-            return instance
+#             return instance
