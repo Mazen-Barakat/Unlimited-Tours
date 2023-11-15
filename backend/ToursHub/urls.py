@@ -9,7 +9,7 @@ tour_router.register(r"gallery", GalleryViewSet, basename="tours-gallery")
 tour_router.register(r"reviews", TourReviewsViewSet, basename="tours-reviews")
 tour_router.register(r"program", TourProgramsViewSet, basename="tours-program")
 tour_router.register(r"facilities", TourFacilitiesViewSet, basename="tours-facilities")
-# tour_router.register(r'booking', TourBookingViewSet, basename='tours-booking')
+tour_router.register(r'booking', TourBookingViewSet, basename='tours-booking')
 router.register(r'tourist', TouristViewSet, basename='tourist')
 tourist_router = routers.NestedDefaultRouter(router, r'tourist', lookup='tourist')
 

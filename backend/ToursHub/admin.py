@@ -19,7 +19,7 @@ class ToursAdmin(admin.ModelAdmin):
     )
     list_filter = ("is_active", "created_at", "updated_at")
     search_fields = ("tour_title", "tour_overview")
-    list_editable = ( "duration", "is_active")
+    list_editable = ("duration", "is_active")
     prepopulated_fields = {"slug": ("tour_title",)}
 
 
@@ -113,18 +113,56 @@ class ReviewRepliesAdmin(admin.ModelAdmin):
             .only("tour_review", "reply")
         )
 
-admin.site.register(models.TourCost)
+
+@admin.register(models.TourCost)
+class TourCostAdmin(admin.ModelAdmin):
+    list_display = (
+        "tour",
+        "price_currency",
+        "adult_cost",
+        "child_cost",
+        "infant_cost",
+        "discount",
+        "tax",
+    )
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("tour")
+            .only(
+                "tour",
+                "price_currency",
+                "adult_cost",
+                "child_cost",
+                "infant_cost",
+                "discount",
+                "tax",
+            )
+        )
 
 
 @admin.register(models.TourBooking)
 class TourBookingAdmin(admin.ModelAdmin):
-    list_display = ("tour", "user", "booking_status")
-    search_fields = ("tour", "user", "booking_status")
+    list_display = (
+        "tour",
+        "user",
+        "first_name",
+        "last_name",
+        "booking_date",
+        "total_adults",
+        "total_children",
+        "total_infants",
+        "total_cost",
+    )
+    list_filter = ("tour", "user", "booking_date")
+    search_fields = ("tour", "user")
 
-    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+    def get_queryset(self, request):
         return (
             super()
             .get_queryset(request)
             .select_related("tour", "user")
-            .only("tour__tour_title", "user__username", "booking_status")
+        
         )

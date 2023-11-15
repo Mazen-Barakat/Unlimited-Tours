@@ -201,6 +201,10 @@ class TourBooking(models.Model):
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES, null=True, blank=True
     )
+    total_adults = models.IntegerField(default=0, blank=True)
+    total_children = models.IntegerField(default=0, blank=True)
+    total_infants = models.IntegerField(default=0, blank=True)
+    price_currency = models.CharField(max_length=3, default="USD")
     total_cost = models.IntegerField()
     booking_status = models.CharField(
         max_length=1, choices=BOOKING_STATUS_CHOICES, default="P"

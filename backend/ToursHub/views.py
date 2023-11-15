@@ -167,7 +167,7 @@ class TourReviewsViewSet(ModelViewSet):
             # Try to get an existing review, or create one if it doesn't exist
             review = TourReviews.objects.filter(tour_id=tour_id, user=user).first()
 
-            if review.tour.is_active == False:
+            if review and review.tour.is_active == False:
                 return Response(
                     {"detail": "This tour is not active anymore."},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -287,34 +287,30 @@ class TouristViewSet(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# class TourBookingViewSet(ModelViewSet):
-#     serializer_class = TourBookingSerializer
-#     permission_classes = [permissions.IsAuthenticated]
+class TourBookingViewSet(ModelViewSet):
+    serializer_class = TourBookingSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-#     def get_queryset(self):
-#         queryset = (
-#             TourBooking.objects.select_related("tour", "user")
-#             .only(
-#                 "id",
-#                 "tour__id",
-#                 "tour__tour_title",
-#                 "tour__is_active",
-#                 "user__id",
-#                 "user__username",
-#                 "booking_status",
-#                 "total_cost",
-#                 "created_at",
-#             )
-#             .prefetch_related("booking_users")
-#             .filter(tour_id=self.kwargs["tours_pk"])
-#         )
-#         if not self.request.user.is_superuser:
-#             queryset = queryset.filter(tour__is_active=True, user=self.request.user)
-#         return queryset
+    def get_queryset(self):
+        queryset = TourBooking.objects.select_related("tour", "user").filter(
+            tour_id=self.kwargs["tours_pk"]
+        )
+        if not self.request.user.is_superuser:
+            queryset = queryset.filter(tour__is_active=True, user=self.request.user)
+        return queryset
 
-#     def get_serializer_context(self):
-#         return (
-#             super().get_serializer_context()
-#             | {"tour_id": self.kwargs["tours_pk"]}
-#             | {"user": self.request.user}
-#         )
+    def get_serializer_context(self):
+        return (
+            super().get_serializer_context()
+            | {"tour_id": self.kwargs["tours_pk"]}
+            | {"user": self.request.user}
+        )
+
+    def get_permissions(self):
+        if not self.request.user.is_superuser and self.action in [
+            "update",
+            "partial_update",
+            "destroy",
+        ]:
+            return [permissions.IsAdminUser()]
+        return super().get_permissions()
