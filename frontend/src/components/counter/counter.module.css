@@ -1,0 +1,52 @@
+.counterItem {
+  flex: 0 0 auto;
+  width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.counterIcon {
+  position: relative;
+  font-size: 35px;
+  width: 80px;
+  height: 80px;
+  line-height: 78px;
+  text-align: center;
+  background: #7167ff;
+  border-radius: 30px;
+  color: #fff;
+}
+
+.counterNumber {
+  display: flex;
+  align-items: center;
+}
+
+.counter {
+  display: block;
+  line-height: 1;
+  color: #4f4b8b;
+  font-size: 50px;
+  font-weight: 600;
+}
+
+.counterNumber .counterSign {
+  color: #4f4b8b;
+  font-size: 40px;
+  line-height: 0;
+  margin-left: 2px;
+  font-weight: 600;
+}
+
+.counterContent h6 {
+  color: #4f4b8b;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: capitalize;
+}

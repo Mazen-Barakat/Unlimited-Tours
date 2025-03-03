@@ -8,6 +8,12 @@ from . import models
 # Register your models here.
 
 
+class destinationsInline(admin.TabularInline):
+    model = models.Destinations
+    min_num = 0
+    extra = 0
+
+
 @admin.register(models.Tours)
 class ToursAdmin(admin.ModelAdmin):
     list_display = (
@@ -21,6 +27,7 @@ class ToursAdmin(admin.ModelAdmin):
     search_fields = ("tour_title", "tour_overview")
     list_editable = ("duration", "is_active")
     prepopulated_fields = {"slug": ("tour_title",)}
+    inlines = [destinationsInline]
 
 
 @admin.register(models.Tourist)

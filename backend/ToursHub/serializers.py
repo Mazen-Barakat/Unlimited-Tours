@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.db import transaction
 from .models import *
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class DestinationsSerializer(serializers.ModelSerializer):
@@ -17,6 +18,7 @@ class DestinationsSerializer(serializers.ModelSerializer):
 
 
 class TourCostSerializer(serializers.ModelSerializer):
+    total = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = TourCost
         fields = [
@@ -26,24 +28,23 @@ class TourCostSerializer(serializers.ModelSerializer):
             "infant_cost",
             "discount",
             "tax",
+            "total",
         ]
+
+    def get_total(self, obj):
+        adult_cost = obj.adult_cost or 0
+        child_cost = obj.child_cost or 0
+        infant_cost = obj.infant_cost or 0
+        discount = obj.discount or 0
+        tax = obj.tax or 0
+        total_sum = adult_cost + child_cost + infant_cost
+        total_sum = total_sum - (total_sum * discount / 100)
+        total_sum = total_sum + (total_sum * tax / 100)
+        return int(total_sum)
 
 
 class TourListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tours
-        fields = [
-            "id",
-            "tour_title",
-            "slug",
-            "tour_overview",
-            "tour_cost",
-            "duration",
-        ]
-
-
-class ToursSerializer(serializers.ModelSerializer):
-    destinations = DestinationsSerializer(many=True, read_only=True)
+    tour_type = serializers.SerializerMethodField()
     tour_cost = TourCostSerializer(read_only=True)
 
     class Meta:
@@ -51,6 +52,34 @@ class ToursSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "tour_title",
+            "tour_type",
+            "slug",
+            "duration",
+            "tour_main_image",
+            "tour_cost",
+        ]
+
+    def get_tour_type(self, obj):
+        if obj.tour_type == "A":
+            return "Activity"
+        elif obj.tour_type == "T":
+            return "Trip"
+        elif obj.tour_type == "C":
+            return "Cruise"
+        return obj.get_tour_type_display()
+
+
+class ToursSerializer(serializers.ModelSerializer):
+    destinations = DestinationsSerializer(many=True, read_only=True)
+    tour_cost = TourCostSerializer(read_only=True)
+    tour_type = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Tours
+        fields = [
+            "id",
+            "tour_title",
+            "tour_type",
             "slug",
             "tour_main_image",
             "tour_overview",
@@ -64,6 +93,15 @@ class ToursSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+    def get_tour_type(self, obj):
+        if obj.tour_type == "A":
+            return "Activity"
+        elif obj.tour_type == "T":
+            return "Trip"
+        elif obj.tour_type == "C":
+            return "Cruise"
+        return obj.get_tour_type_display()
 
 
 class ToursAdminSerializer(serializers.ModelSerializer):
@@ -254,7 +292,8 @@ class TouristSerializer(serializers.ModelSerializer):
 
 class TourBookingSerializer(serializers.ModelSerializer):
     tour = serializers.StringRelatedField(read_only=True)
-    user = serializers.StringRelatedField(source= 'user.username',read_only=True)
+    user = serializers.StringRelatedField(source="user.username", read_only=True)
+
     class Meta:
         model = TourBooking
         fields = [

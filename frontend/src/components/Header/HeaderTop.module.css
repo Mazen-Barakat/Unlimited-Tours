@@ -1,0 +1,167 @@
+.headerTop {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: auto;
+  background: transparent;
+  position: relative;
+  padding: 0 6px;
+  width: 90%;
+  height: 35%;
+  z-index: 99999;
+}
+
+.left {
+  flex: 0 0 auto;
+  width: 58.333%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.social a {
+  color: #fff;
+  display: inline-block;
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  text-align: center;
+  border: 2px solid #fff;
+  margin-right: 10px;
+  line-height: 28.9px;
+  transition: all 0.5s ease-in-out;
+}
+
+.social a:hover {
+  background: #fff;
+  color: #7167ff;
+}
+
+.icon {
+  font-weight: 400;
+}
+
+.contact ul {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.contact ul li a {
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.5s ease-in-out;
+}
+
+.contact ul li a:hover {
+  color: #7167ff;
+}
+
+.contact ul li a svg {
+  margin-right: 5px;
+}
+
+.right {
+  flex: 0 0 auto;
+  width: 41.667%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.currency,
+.lang {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  line-height: 43px;
+  cursor: pointer;
+  position: relative;
+  height: 42px;
+  border-radius: 5px;
+  font-size: 14px;
+  padding-left: 15px;
+  padding-right: 18px;
+  text-align: left;
+  width: auto;
+  z-index: 99999999;
+}
+
+.currentCurrency,
+.currentLang {
+  font-weight: 700;
+}
+
+.selectedCurr,
+.selectedLang {
+  color: #7167ff !important;
+  font-weight: 700;
+  background: #eee;
+  border-radius: 8px;
+}
+
+.currency svg,
+.lang svg {
+  margin-left: 5px;
+  transform-origin: 50% 50%;
+  transform: rotate(-180deg);
+  transition: all 0.15s ease-in-out;
+}
+
+.iconActive {
+  transform: rotate(0deg) !important;
+}
+
+.list {
+  border-radius: 8px;
+  box-shadow: 0 3px 24px rgb(0 0 0 /10%);
+  background-color: #fff;
+  margin-top: 4px;
+  opacity: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform-origin: 50% 0;
+  transform: scale(0.75) translateY(-21px);
+  transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25), opacity 0.15s ease-out;
+  z-index: 9999999;
+}
+
+.listActive {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.list li {
+  padding-left: 18px;
+  padding-right: 29px;
+  text-align: left;
+  min-height: 40px;
+  line-height: 40px;
+  color: #000;
+}
+
+.list li:hover {
+  color: #7167ff;
+}
+.auth {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.auth a {
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.5s ease-in-out;
+}
+
+.auth a:hover {
+  color: #7167ff;
+}
+
+.auth a svg {
+  margin-right: 5px;
+}

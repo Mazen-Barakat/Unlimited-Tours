@@ -17,7 +17,7 @@ class Tours(models.Model):
     tour_title = models.CharField(max_length=300)
     slug = models.SlugField(max_length=300, null=True, blank=True)
     tour_overview = models.TextField()
-    duration = models.DurationField()
+    duration = models.SmallIntegerField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     is_active = models.BooleanField(default=True)

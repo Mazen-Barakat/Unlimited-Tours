@@ -29,12 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-INTERNAL_IPS = [
-    # ...
-    '127.0.0.1',
-    # ...
-]
-
 
 # Application definition
 
@@ -45,15 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'debug_toolbar',
-    'django_filters',
-    'phonenumber_field',
-    'rest_framework',
-    'djoser',
-    'corsheaders',
-    'Core',
-    'ToursHub',
-    'BlogsHub',
+    "debug_toolbar",
+    "django_filters",
+    "phonenumber_field",
+    "rest_framework",
+    "djoser",
+    "corsheaders",
+    "Core",
+    "ToursHub",
+    "BlogsHub",
 ]
 
 MIDDLEWARE = [
@@ -66,6 +60,17 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 ROOT_URLCONF = "UnlimitedTours.urls"
@@ -93,12 +98,12 @@ WSGI_APPLICATION = "UnlimitedTours.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'unlimitedtours1',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': 'elms2023@O6U'
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "unlimitedtours1",
+        "HOST": "localhost",
+        "USER": "root",
+        "PASSWORD": "elms2023@O6U",
     }
 }
 
@@ -137,10 +142,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -149,24 +154,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Rest Framework
 REST_FRAMEWORK = {
-    'COERCE_DECIMAL_TO_STRING': False,
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "COERCE_DECIMAL_TO_STRING": False,
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
 
 # Simple JWT
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=100),
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=100),
 }
 
 # User class
-AUTH_USER_MODEL = 'Core.User'
+AUTH_USER_MODEL = "Core.User"
 
 DJOSER = {
-    'SERIALIZERS': {
-        'user_create': 'Core.serializers.UserCreateSerializer',
-        'current_user': 'Core.serializers.UserSerializer',
+    "SERIALIZERS": {
+        "user_create": "Core.serializers.UserCreateSerializer",
+        "current_user": "Core.serializers.UserSerializer",
     },
 }

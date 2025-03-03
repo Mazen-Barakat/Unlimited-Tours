@@ -1,0 +1,245 @@
+.search {
+  position: relative;
+  z-index: 99;
+  width: 85%;
+  margin: auto;
+  margin-top: -80px;
+}
+
+.search form {
+  background: #fff;
+  padding: 45px 30px 50px 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+}
+
+.searchRow {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+  justify-content: space-between;
+}
+
+.searchColumn {
+  flex: 0 0 auto;
+  width: 32.33333333%;
+  position: relative;
+  padding: 20px 15px;
+  border-radius: 12px;
+  background: rgba(113, 103, 255, 0.15);
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.searchColumn label {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #4f4b8b;
+  cursor: pointer;
+}
+
+.searchColumn .searchInput {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  padding: 5px 0px;
+  box-shadow: none;
+  color: #4f4b8b;
+  background: transparent;
+  border: none;
+  font-size: 19px;
+  font-weight: bold;
+  appearance: none;
+  margin: 0;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.searchColumn div {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.searchColumn input:focus {
+  outline: none;
+}
+
+.searchColumn svg {
+  position: absolute;
+  right: 16px;
+  top: 12px;
+  font-size: 28px;
+  font-weight: 300;
+  color: #7167ff;
+}
+
+.searchColumn p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #4f4b8b;
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.multiBlock {
+  display: flex;
+}
+
+.roomsGuests {
+  border-radius: 12px;
+  padding: 2.4px 0px;
+  color: #4f4b8b;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.dropDownMenu {
+  position: absolute;
+  inset: 0px 0px auto auto;
+  margin: 0px;
+  transform: translate3d(-15.2px, 107.2px, 0px);
+  background: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 10px;
+  width: 291px;
+  right: -15px !important;
+  margin-top: 15px !important;
+  box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+}
+
+.dropDownItem {
+  --bs-dropdown-item-padding-x: 1rem;
+  --bs-dropdown-item-padding-y: 0.25rem;
+  --bs-dropdown-header-color: #6c757d;
+  display: block;
+  width: 100%;
+  padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x);
+  clear: both;
+  font-weight: 400;
+  color: var(--bs-dropdown-link-color);
+  text-align: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.passengerItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.passengerInfo h6 {
+  font-size: 16px;
+}
+
+.passengerInfo p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #4f4b8b;
+  font-size: 15px;
+  margin: 0;
+}
+
+.passengerCounter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.passengerCounter button {
+  border: none;
+  width: 35px;
+  height: 35px;
+  line-height: 32px;
+  border-radius: 50px;
+  background: rgba(113, 103, 255, 0.15);
+  cursor: pointer;
+}
+
+.counterIcon {
+  position: unset !important;
+  font-size: 16px !important;
+}
+
+.passengerCounter input {
+  width: 25px;
+  text-align: center;
+  border: none;
+  outline: none;
+  font-weight: 500;
+  color: #4f4b8b;
+  margin: 0;
+}
+
+.formCheck {
+  display: block;
+  min-height: 1.5rem;
+  padding-left: 1.5em;
+  margin-bottom: 0.125rem;
+}
+
+.formCheck .formCheckInput {
+  box-shadow: none;
+  margin-top: 7px;
+  border-radius: 50%;
+  float: left;
+  margin-left: -1.5em;
+}
+
+.formCheck label {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #4f4b8b;
+  cursor: pointer;
+}
+
+.searchButton {
+  position: absolute;
+  border-radius: 50px;
+  border: 5px solid #fff;
+  bottom: -25px;
+  left: 50%;
+  padding: 7px 25px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  background: #7167ff;
+  box-shadow: 0 3px 24px rgb(0 0 0 / 12%);
+  z-index: 100;
+  text-align: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.5s;
+  text-transform: capitalize;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.searchButton::before {
+  content: '';
+  height: 400px;
+  width: 400px;
+  background: #f96768;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%) scale(0);
+  transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: -1;
+}
+
+.searchButton:hover::before {
+  transform: translateY(-50%) translateX(-50%) scale(1);
+}

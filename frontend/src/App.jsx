@@ -1,14 +1,13 @@
 import './App.css'
+import HomePage from './pages/HomePage/HomePage'
+import Loader from './components/Loader/Loader'
 
 function App() {
 
   return (
-    <>
-      
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className='appStyle'>
+      <HomePage />
+    </div>
   )
 }
 

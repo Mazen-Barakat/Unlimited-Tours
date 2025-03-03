@@ -1,0 +1,10 @@
+.header {
+  height: 10%;
+}
+
+.divider {
+  background: transparent;
+  position: relative;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+  z-index: 8888;
+}
