@@ -86,7 +86,6 @@ class TourReviewsViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = (
             TourReviews.objects.select_related("tour", "user")
-            .prefetch_related("review_replies")
             .filter(tour_id=self.kwargs["tours_pk"])
         )
         if not self.request.user.is_superuser:
@@ -94,11 +93,15 @@ class TourReviewsViewSet(ModelViewSet):
         return queryset
 
     def get_serializer_context(self):
-        return (
-            super().get_serializer_context()
-            | {"tour_id": self.kwargs["tours_pk"]}
-            | {"user": self.request.user}
+        context = super().get_serializer_context()
+        context.update(
+            {
+                "tour_id": self.kwargs["tours_pk"],
+                "user": self.request.user,
+                "request": self.request,  # Add the request object here
+            }
         )
+        return context
 
     def get_serializer_class(self):
         if self.request.user.is_superuser:

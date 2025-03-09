@@ -179,10 +179,10 @@ class ReviewRepliesSerializer(serializers.ModelSerializer):
 
 
 class TourReviewsSerializer(serializers.ModelSerializer):
-    review_replies = ReviewRepliesSerializer(many=True, read_only=True)
     id = serializers.IntegerField(read_only=True)
     user = serializers.StringRelatedField(read_only=True)
     tour = serializers.StringRelatedField(read_only=True)
+    profile_picture = serializers.SerializerMethodField( read_only=True)
 
     class Meta:
         model = TourReviews
@@ -193,8 +193,21 @@ class TourReviewsSerializer(serializers.ModelSerializer):
             "review",
             "rating",
             "created_at",
-            "review_replies",
+            "profile_picture",
         ]
+
+    def get_profile_picture(self, obj):
+        try:
+            if obj.user.profile_picture:
+                request = self.context.get("request")
+                if request:
+                    return request.build_absolute_uri(obj.user.profile_picture.url)
+                else:
+                    return obj.user.profile_picture.url
+            else:
+                return None
+        except ObjectDoesNotExist:
+            return None
 
     def create(self, validated_data):
         print(self.context)
@@ -211,10 +224,10 @@ class TourReviewsSerializer(serializers.ModelSerializer):
 
 
 class TourReviewsAdminSerializer(serializers.ModelSerializer):
-    review_replies = ReviewRepliesSerializer(many=True)
     id = serializers.IntegerField(read_only=True)
     user = serializers.StringRelatedField(read_only=True)
     tour = serializers.StringRelatedField(read_only=True)
+    profile_picture = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = TourReviews
@@ -225,8 +238,21 @@ class TourReviewsAdminSerializer(serializers.ModelSerializer):
             "review",
             "rating",
             "created_at",
-            "review_replies",
+            "profile_picture",
         ]
+
+    def get_profile_picture(self, obj):
+        try:
+            if obj.user.profile_picture:
+                request = self.context.get("request")
+                if request:
+                    return request.build_absolute_uri(obj.user.profile_picture.url)
+                else:
+                    return obj.user.profile_picture.url
+            else:
+                return None
+        except ObjectDoesNotExist:
+            return None
 
     def update(self, instance, validated_data):
         review_replies_data = validated_data.pop("review_replies")
@@ -250,7 +276,7 @@ class TourProgramsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TourPrograms
-        fields = ["id", "tour", "title", "day", "description"]
+        fields = ["id", "tour", "title", "day", "description", "image"]
 
     def create(self, validated_data):
         return TourPrograms.objects.create(
@@ -264,7 +290,7 @@ class TourFacilitiesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TourFacilities
-        fields = ["id", "tour", "tour_facility", "icon", "description"]
+        fields = ["id", "tour", "tour_facility", "description"]
 
     def create(self, validated_data):
         return TourFacilities.objects.create(

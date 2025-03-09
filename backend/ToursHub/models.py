@@ -113,7 +113,6 @@ class TourFacilities(models.Model):
         Tours, on_delete=models.CASCADE, related_name="tour_facilities"
     )
     tour_facility = models.CharField(max_length=100)
-    icon = models.CharField(max_length=100)
     description = models.TextField()
 
     def __str__(self) -> str:
@@ -127,6 +126,7 @@ class TourPrograms(models.Model):
     title = models.CharField(max_length=100)
     day = models.IntegerField()
     description = models.TextField(null=True, blank=True)
+    image = models.ImageField(upload_to="programs", null=True, blank=True)
 
     def __str__(self) -> str:
         return self.tour.tour_title
