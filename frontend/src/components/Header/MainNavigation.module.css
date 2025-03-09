@@ -47,6 +47,10 @@
   gap: 20px;
 }
 
+.nav ul li:hover {
+  z-index: 999999;
+}
+
 .nav ul li a {
   color: #fff;
   font-weight: 600;

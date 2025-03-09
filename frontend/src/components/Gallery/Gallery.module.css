@@ -1,0 +1,20 @@
+.gallerySlider {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mySwiper img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* Customize the pagination container */
+.swiper-pagination {
+  position: absolute;
+  bottom: 10px; /* Adjust position */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

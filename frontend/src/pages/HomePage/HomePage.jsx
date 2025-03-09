@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import classes from './HomePage.module.css';
 import Header from '../../components/Header/Header';
+import MainBackground from '../../components/MainBackground/MainBackground';
 import Footer from '../../components/Footer/Footer';
 import Search from '../../components/Search/Search';
 import Counter from '../../components/counter/counter';
@@ -46,12 +47,7 @@ const HomePage = () => {
   return (
     <div className={classes.home}>
       <Header />
-      <div className={classes.maint}>
-        <div className={classes.middleContainer}>
-          <h1>Explore The World Together</h1>
-          <p>Discover the best destinations and travel experiences with us</p>
-        </div>
-      </div>
+      <MainBackground />
       <Search />
 
       {/* feature Area */}

@@ -1,4 +1,5 @@
 import classes from './ToursList.module.css';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHeart,
@@ -7,12 +8,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const ToursList = tours => {
+  const navigate = useNavigate();
+
+  const tourClickHandler = tour => {
+    navigate(`/tour/${tour.slug}` , { state: { id: tour.id } });
+  }
+
   return (
     <div className={classes.row}>
       {tours.tours.map((tour, index) => {
         return (
           <div key={index} className={classes.bigList}>
-            <div className={classes.tourItem}>
+            <div className={classes.tourItem} onClick={() => tourClickHandler(tour)}>
               <div className={classes.tourImg}>
                 {tour.tour_cost.discount > 0 ? (
                   <span className={classes.badgeDiscount}>

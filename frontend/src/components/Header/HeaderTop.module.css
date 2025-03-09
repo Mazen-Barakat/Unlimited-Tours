@@ -85,7 +85,6 @@
   padding-right: 18px;
   text-align: left;
   width: auto;
-  z-index: 99999999;
 }
 
 .currentCurrency,
@@ -101,38 +100,48 @@
   border-radius: 8px;
 }
 
-.currency svg,
-.lang svg {
-  margin-left: 5px;
-  transform-origin: 50% 50%;
-  transform: rotate(-180deg);
-  transition: all 0.15s ease-in-out;
-}
-
-.iconActive {
-  transform: rotate(0deg) !important;
-}
 
 .list {
+  visibility: hidden;
+  opacity: 0; 
+  display: block;
   border-radius: 8px;
   box-shadow: 0 3px 24px rgb(0 0 0 /10%);
   background-color: #fff;
   margin-top: 4px;
-  opacity: 0;
   padding: 0;
   position: absolute;
   top: 100%;
   left: 0;
   transform-origin: 50% 0;
   transform: scale(0.75) translateY(-21px);
-  transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25), opacity 0.15s ease-out;
-  z-index: 9999999;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+  z-index: 9999;
 }
 
 .listActive {
-  opacity: 1;
-  transform: scale(1) translateY(0);
+  visibility: visible;
+  opacity: 1; 
+  transform: scale(1) translateY(0); 
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
+.listNotActive {
+  visibility: hidden; 
+  opacity: 0;
+  transform: scale(0.75) translateY(-21px); 
+}
+
+.lang svg,
+.currency svg {
+  margin-left: 5px;
+  transition: transform 0.3s ease; 
+}
+
+.iconActive {
+  transform: rotate(180deg); 
+}
+
 
 .list li {
   padding-left: 18px;

@@ -8,7 +8,9 @@ import {
   faShip,
   faPhoneVolume,
   faPenToSquare,
+  faHome,
 } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const MainNavigation = props => {
   return (
@@ -27,19 +29,24 @@ const MainNavigation = props => {
       >
         <ul>
           <li>
-            <a href='/'>
+            <Link to='/'>
+              <FontAwesomeIcon icon={faHome} /> Home
+            </Link>
+          </li>
+          <li>
+            <Link to='/trip'>
               <FontAwesomeIcon icon={faEarth} /> Trip
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/'>
-              <FontAwesomeIcon icon={faShip} /> Cruise Cruise
-            </a>
+            <Link to='/cruise'>
+              <FontAwesomeIcon icon={faShip} /> Cruise
+            </Link>
           </li>
           <li>
-            <a href='/'>
+            <Link to='/activity'>
               <FontAwesomeIcon icon={faPersonBiking} /> Activity
-            </a>
+            </Link>
           </li>
           <li>
             <a href='/'>

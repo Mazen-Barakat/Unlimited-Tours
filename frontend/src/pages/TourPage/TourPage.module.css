@@ -1,0 +1,133 @@
+.tripStyle {
+  padding: 120px 0;
+}
+
+.Container {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 95%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+}
+
+.row > * {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+}
+
+.upperBar {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.upperBarDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  margin-bottom: 25px;
+  padding: 10px 10px 10px 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+}
+
+.upperBarDetails h3 {
+  font-size: 18 px;
+}
+
+.sortList {
+  flex: 0 0 auto;
+  width: 25%;
+}
+
+.selectList {
+  width: 100%;
+  height: 46px;
+  line-height: 44px;
+  border-radius: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid #e8e8e8;
+  color: #4f4b8b;
+  background-color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: inherit;
+  transition: all 0.2s ease-in-out;
+}
+
+.selectList:focus {
+  border-color: #7167ff !important;
+}
+
+.selectList option {
+  font-weight: 600;
+  line-height: 40px;
+  padding-left: 18px;
+  padding-right: 29px;
+  background-color: #fff;
+  transition: all 0.2s;
+}
+
+.selectList option:hover {
+  background-color: #f6f6f6;
+  color: #4f4b8b;
+}
+
+.selectList option:checked {
+  background-color: #7167ff;
+  color: white;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pageBtn {
+  background-color: #4f4b8b;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pageBtn:hover {
+  background-color: #7167ff;
+  color: white;
+}
+
+.pageBtn:disabled {
+  background-color: #4f4b8b;
+  cursor: not-allowed;
+}
+
+.activePage {
+  background-color: #7167ff;
+  color: white;
+}

@@ -19,38 +19,34 @@ import {
 const HeaderTop = () => {
   const defaultLang = 'ENG';
   const defaultCurrency = 'USD';
-  const [currentLang, setCurrentLang] = useState(`${defaultLang}`);
-  const [listClasses, setListClasses] = useState(`${classes.list}`);
+  const [currentLang, setCurrentLang] = useState(defaultLang);
+  const [listClasses, setListClasses] = useState(
+    `${classes.list} ${classes.listNotActive}`
+  );
   const [iconClasses, setIconClasses] = useState('');
-  const [currentCurrency, setCurrentCurrency] = useState(`${defaultCurrency}`);
-  const [currListClasses, setCurrListClasses] = useState(`${classes.list}`);
+  const [currentCurrency, setCurrentCurrency] = useState(defaultCurrency);
+  const [currListClasses, setCurrListClasses] = useState(
+    `${classes.list} ${classes.listNotActive}`
+  );
   const [currIconClasses, setCurrIconClasses] = useState('');
 
   const toggleList = () => {
-    if (listClasses === `${classes.list}`) {
+    if (listClasses === `${classes.list} ${classes.listNotActive}`) {
       setListClasses(`${classes.list} ${classes.listActive}`);
+      setIconClasses(classes.iconActive);
     } else {
-      setListClasses(`${classes.list}`);
-    }
-
-    if (iconClasses === '') {
-      setIconClasses(`${classes.iconActive}`);
-    } else {
+      setListClasses(`${classes.list} ${classes.listNotActive}`);
       setIconClasses('');
     }
   };
 
   const toggleCurrList = () => {
-    if (currListClasses === `${classes.list}`) {
+    if (currListClasses === `${classes.list} ${classes.listNotActive}`) {
       setCurrListClasses(`${classes.list} ${classes.listActive}`);
+      setCurrIconClasses(classes.iconActive); 
     } else {
-      setCurrListClasses(`${classes.list}`);
-    }
-
-    if (currIconClasses === '') {
-      setCurrIconClasses(`${classes.iconActive}`);
-    } else {
-      setCurrIconClasses('');
+      setCurrListClasses(`${classes.list} ${classes.listNotActive}`);
+      setCurrIconClasses(''); 
     }
   };
 
@@ -65,17 +61,19 @@ const HeaderTop = () => {
         currRef.current && !currRef.current.contains(event.target);
 
       if (isClickOutsideLang && listClasses.includes('listActive')) {
-        setListClasses(`${classes.list}`);
+        setListClasses(`${classes.list} ${classes.listNotActive}`);
         setIconClasses('');
       }
 
       if (isClickOutsideCurr && currListClasses.includes('listActive')) {
-        setCurrListClasses(`${classes.list}`);
+        setCurrListClasses(`${classes.list} ${classes.listNotActive}`);
         setCurrIconClasses('');
       }
     };
 
-    return () => handleClickOutside;
+    document.addEventListener('click', handleClickOutside);
+
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [listClasses, currListClasses]);
 
   return (

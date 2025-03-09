@@ -88,6 +88,8 @@
   color: #5d646d;
   padding-right: 18px;
   margin-bottom: 1.5rem;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .footerContact {
@@ -309,8 +311,8 @@
 .copyRightArea {
   flex: 0 0 auto;
   width: 50%;
-	align-self: center;
-	padding: 0 10px;
+  align-self: center;
+  padding: 0 10px;
 }
 
 .copyrightText {
@@ -337,13 +339,13 @@
   line-height: 38px;
   text-align: center;
   border-radius: 50px;
-  background: rgba(114, 103, 255, .1);
-  color: #7167FF;
-  transition: all .5s ease-in-out;
-	padding: 10px;
+  background: rgba(114, 103, 255, 0.1);
+  color: #7167ff;
+  transition: all 0.5s ease-in-out;
+  padding: 10px;
 }
 
 .footerSocial li a svg:hover {
-  background: #7167FF;
+  background: #7167ff;
   color: #fff;
 }
