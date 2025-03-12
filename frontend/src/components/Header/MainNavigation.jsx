@@ -49,7 +49,7 @@ const MainNavigation = props => {
             </Link>
           </li>
           <li>
-            <a href='/'>
+            <a href='/blogs'>
               <FontAwesomeIcon icon={faPenToSquare} /> Blogs
             </a>
           </li>

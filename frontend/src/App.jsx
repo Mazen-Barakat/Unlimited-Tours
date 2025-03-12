@@ -1,8 +1,12 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
-import TourPage from './pages/TourPage/TourPage';
+import TourPage from './pages/TourPage/TourPage'; 
 import TourDetailsPage from './pages/TourDetailsPage/TourDetailsPage';
+import BookingPage from './pages/BookingPage/BookingPage';
+import BlogsLayout from './pages/BlogsPage/BlogsLayout/BlogsLayout';
+import Blogs from './pages/BlogsPage/Blogs/Blogs';
+import BlogDetails from './pages/BlogsPage/BlogDetails/BlogDetails';
 import Loader from './components/Loader/Loader';
 import { useEffect, useState } from 'react';
 
@@ -40,6 +44,24 @@ function App() {
       path: '/tour/:slug',
       element: <TourDetailsPage />,
     },
+    {
+      path: '/tour/:slug/booking',
+      element: <BookingPage />,
+    },
+    {
+      path: '/blogs',
+      element: <BlogsLayout />,
+      children: [
+        {
+          index: true,
+          element: <Blogs />,
+        },
+        {
+          path: ':blogId',
+          element: <BlogDetails />,
+        }
+      ],
+    }
   ]);
 
   return (

@@ -456,7 +456,7 @@
 .themeBtn::before {
   content: '';
   height: 400px;
-  width: 400px;
+  width: 500px;
   background: #f96768;
   border-radius: 50%;
   position: absolute;
@@ -643,6 +643,7 @@
   right: -15px !important;
   margin-top: 15px !important;
   box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+  z-index: 2;
 }
 
 .dropDownItem {

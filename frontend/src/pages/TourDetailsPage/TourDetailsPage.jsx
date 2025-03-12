@@ -1,8 +1,9 @@
 import classes from './TourDetailsPage.module.css';
+import { format } from 'date-fns';
 import Header from '../../components/Header/Header';
 import MainBackground from '../../components/MainBackground/MainBackground';
 import Footer from '../../components/Footer/Footer';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import {
   getTourDetails,
@@ -10,11 +11,7 @@ import {
   getTourFacilities,
   getTourProgram,
 } from '../../utils/getData';
-import {
-  formatDate,
-  chunkArray,
-  calculateTotalCost,
-} from '../../utils/Helpers';
+import { chunkArray, calculateTotalCost, formatDate } from '../../utils/Helpers';
 import Loader from '../../components/Loader/Loader';
 import Gallery from '../../components/Gallery/Gallery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -47,6 +44,7 @@ import {
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 
 const TourDetailsPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const tourId = location.state?.id;
   const defaultRoomNumber = 0;
@@ -456,8 +454,10 @@ const TourDetailsPage = () => {
 
                             {/* Date below */}
                             <span className={classes.date}>
-                              {tour.start_date.split('T')[0]}{' '}
-                              {/* Extracts "1974-06-08" */}
+                              {format(
+                                new Date(tour.start_date),
+                                "d MMM yyyy 'at' hh:mm a"
+                              )}
                             </span>
                           </div>
                         </div>
@@ -480,8 +480,10 @@ const TourDetailsPage = () => {
 
                             {/* Date below */}
                             <span className={classes.date}>
-                              {tour.end_date.split('T')[0]}{' '}
-                              {/* Extracts "1974-06-08" */}
+                              {format(
+                                new Date(tour.end_date),
+                                "d MMM yyyy 'at' hh:mm a"
+                              )}
                             </span>
                           </div>
                         </div>
@@ -844,6 +846,19 @@ const TourDetailsPage = () => {
                     <button
                       className={`${classes.themeBtn} ${classes.btn}`}
                       type='submit'
+                      onClick={() =>
+                        navigate(`/tour/${tour.slug}/booking`, {
+                          state: {
+                            tour,
+                            adults: adults ?? 0, // Default to 0 if undefined/null
+                            children: children ?? 0,
+                            Infant: Infant ?? 0,
+                            roomsNumber: roomsNumber ?? 1, // Default to 1 if needed
+                            roomType: roomType ?? 'Single',
+                            totalPrice: totalPrice ?? 0,
+                          },
+                        })
+                      }
                     >
                       <FontAwesomeIcon icon={faShoppingBag} /> Book Now
                     </button>
