@@ -8,24 +8,26 @@ import Loader from '../../components/Loader/Loader';
 import ToursList from '../../components/Tours/ToursList/ToursList';
 import { getSelectedTours } from '../../utils/getData';
 
-function TourPage({ type }) {
+const TourPage = type => {
   const [loading, setLoading] = useState(true);
   const [tours, setTours] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const toursPerPage = 8;
 
-  const fetchTour = async (type = type) => {
-    const response = await getSelectedTours(type);
-    if (response.status === 200) {
-      setTours(response.result);
-      setLoading(false);
-    } else {
-      console.log('Error');
-    }
-  };
-
   useEffect(() => {
-    fetchTour(type);
+    const fetchTour = async (tourType = type.type) => {
+      try {
+        const response = await getSelectedTours(tourType);
+        if (response.status === 200) {
+          setTours(response.result);
+        }
+      } catch (error) {
+        console.error('Error fetching tours:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTour();
   }, [type]);
 
   if (loading) {
@@ -123,6 +125,6 @@ function TourPage({ type }) {
       <Footer />
     </div>
   );
-}
+};
 
 export default TourPage;

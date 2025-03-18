@@ -1,0 +1,264 @@
+.BlogsArea {
+  padding: 120px 0;
+}
+
+.container {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 90%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+}
+
+.row > * {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+}
+
+.listCenter {
+  visibility: visible;
+  animation-duration: 1s;
+  animation-delay: 0.15s;
+  animation-name: fadeInDown;
+}
+
+.listHeading {
+  margin-bottom: 30px;
+  position: relative;
+  text-align: center;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.listTitle {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  position: relative;
+  background: #7167ff;
+  border-radius: 50px;
+  padding: 5px 20px;
+}
+
+.listBanner {
+  font-weight: 700;
+  font-size: 40px;
+  color: #4f4b8b;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.bigList {
+  flex: 0 0 auto;
+  width: 33.33333%;
+}
+
+.blogItem {
+  gap: 20px;
+  background: #fff;
+  padding: 5px;
+  box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+  visibility: visible;
+  animation-duration: 1s;
+  animation-delay: 0.25s;
+  animation-name: fadeInUp;
+  margin-bottom: 25px;
+  border-radius: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.blogImg {
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.blogImg img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  transition: all 0.3s ease-in-out 0s;
+  vertical-align: middle;
+}
+
+.blogItem:hover .blogImg img {
+  transform: scale(1.1);
+}
+
+.blogContent {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.blogMetaData ul {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e6e8eb;
+}
+
+.blogMetaData ul li {
+  display: inline-block;
+  margin-right: 15px;
+  font-weight: 500;
+  position: relative;
+  color: #4f4b8b;
+}
+
+.blogTitle:hover,
+.linkTitle:hover {
+  color: #7167ff;
+	cursor: pointer;
+}
+
+.linkTitle {
+  color: #4f4b8b;
+  display: inline-block;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
+}
+
+.linkTitle svg {
+  margin-right: 5px;
+  color: #7167ff;
+}
+
+.blogTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.blogBottom{
+	margin-bottom: 10px;
+}
+
+
+.themeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  width: 40%;
+	height: 50px;
+  font-size: 16px;
+  color: #ffffff;
+  padding: 11px 20px;
+  transition: all 0.5s;
+  text-transform: capitalize;
+  position: relative;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  border: none;
+  background: #7167ff;
+  box-shadow: 0 3px 24px rgb(0 0 0 / 12%);
+  z-index: 1;
+}
+
+.themeBtn::before {
+  content: '';
+  height: 400px;
+  width: 500px;
+  background: #f96768;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%) scale(0);
+  transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: -1;
+}
+
+.themeBtn:hover::before {
+  transform: translateY(-50%) translateX(-50%) scale(1);
+}
+
+.themeBtn svg {
+  transition: transform 0.3s ease;
+}
+
+.themeBtn:hover svg {
+  transform: translateX(3px); 
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pageBtn {
+  background-color: #4f4b8b;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pageBtn:hover {
+  background-color: #7167ff;
+  color: white;
+}
+
+.pageBtn:disabled {
+  background-color: #4f4b8b;
+  cursor: not-allowed;
+}
+
+.activePage {
+  background-color: #7167ff;
+  color: white;
+}

@@ -89,7 +89,6 @@
   padding-right: 18px;
   margin-bottom: 1.5rem;
   text-align: justify;
-  text-justify: inter-word;
 }
 
 .footerContact {
@@ -247,7 +246,11 @@
   padding: 15px 18px 15px 45px;
 }
 
-.subscribeBtn {
+.themeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin-top: 20px;
   width: 100%;
   font-size: 16px;
@@ -259,7 +262,6 @@
   border-radius: 10px;
   font-weight: 500;
   cursor: pointer;
-  text-align: center;
   overflow: hidden;
   border: none;
   background: #7167ff;
@@ -267,10 +269,10 @@
   z-index: 1;
 }
 
-.subscribeBtn::before {
+.themeBtn::before {
   content: '';
   height: 400px;
-  width: 400px;
+  width: 500px;
   background: #f96768;
   border-radius: 50%;
   position: absolute;
@@ -281,12 +283,16 @@
   z-index: -1;
 }
 
-.subscribeBtn svg {
-  margin-left: 5px;
+.themeBtn:hover::before {
+  transform: translateY(-50%) translateX(-50%) scale(1);
 }
 
-.subscribeBtn:hover::before {
-  transform: translateY(-50%) translateX(-50%) scale(1);
+.themeBtn svg {
+  transition: transform 0.3s ease;
+}
+
+.themeBtn:hover svg {
+  transform: translateX(3px); 
 }
 
 .subscribeForm p {

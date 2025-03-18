@@ -3,12 +3,13 @@ import { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUserPlus,
-  faCalendar,
   faEarth,
   faMinus,
   faPlus,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
+
+import { faCalendarDays } from '@fortawesome/free-regular-svg-icons';
 
 const Search = () => {
   const defaultRoomNumber = 2;
@@ -65,7 +66,7 @@ const Search = () => {
                   className={classes.searchInput}
                   value={'12/12/2024'}
                 ></input>
-                <FontAwesomeIcon icon={faCalendar} />
+                <FontAwesomeIcon icon={faCalendarDays} />
               </div>
               <p className={classes.dayName}>Thursday</p>
             </div>

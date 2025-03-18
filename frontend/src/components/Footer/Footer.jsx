@@ -224,7 +224,7 @@ const Footer = () => {
                         <FontAwesomeIcon icon={faEnvelope} />
                       </div>
                     </div>
-                    <button className={classes.subscribeBtn} type='submit'>
+                    <button className={classes.themeBtn} type='submit'>
                       Subscribe Now <FontAwesomeIcon icon={faPaperPlane} />
                     </button>
                     <p>

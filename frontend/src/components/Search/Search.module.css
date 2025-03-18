@@ -243,3 +243,11 @@
 .searchButton:hover::before {
   transform: translateY(-50%) translateX(-50%) scale(1);
 }
+
+.searchButton svg {
+  transition: transform 0.3s ease;
+}
+
+.searchButton:hover svg {
+  transform: translateX(-3px);
+}

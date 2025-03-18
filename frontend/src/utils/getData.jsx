@@ -134,3 +134,79 @@ export const getTourProgram = async (id) => {
     }
   });
 }
+
+export const getBlogs = async () => {
+  return fetch(api_url + `/blogs-hub/blogs`, {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json().then(data => {
+        return {
+          result: data,
+          status: response.status,
+        };
+      });
+    } else {
+      return response.status;
+    }
+  });
+}
+
+export const getBlogDetails = async (id) => {
+  return fetch(api_url + `/blogs-hub/blogs/${id}`, {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json().then(data => {
+        return {
+          result: data,
+          status: response.status,
+        };
+      });
+    } else {
+      return response.status;
+    }
+  });
+}
+
+export const getBlogImages = async (id) => {
+  return fetch(api_url + `/blogs-hub/blogs/${id}/gallery`, {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json().then(data => {
+        return {
+          result: data,
+          status: response.status,
+        };
+      });
+    } else {
+      return response.status;
+    }
+  });
+}
+
+export const getBlogComments = async (id) => {
+  return fetch(api_url + `/blogs-hub/blogs/${id}/comments`, {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json().then(data => {
+        return {
+          result: data,
+          status: response.status,
+        };
+      });
+    } else {
+      return response.status;
+    }
+  });
+}

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class BlogsSerializer(serializers.ModelSerializer):
@@ -19,6 +20,7 @@ class BlogsSerializer(serializers.ModelSerializer):
             "net_likes",
             "created_at",
             "updated_at",
+            "main_image",
         ]
 
     def get_net_likes(self, instance):
@@ -49,12 +51,14 @@ class BlogsListedSerializer(serializers.ModelSerializer):
             "title",
             "slug",
             "created_at",
+            "main_image",
         ]
 
 
 class CommentsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     author = serializers.StringRelatedField(source="author.username", read_only=True)
+    profile_picture = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Comments
@@ -64,7 +68,21 @@ class CommentsSerializer(serializers.ModelSerializer):
             "content",
             "created_at",
             "updated_at",
+            "profile_picture",
         ]
+
+    def get_profile_picture(self, obj):
+        try:
+            if obj.author.profile_picture:
+                request = self.context.get("request")
+                if request:
+                    return request.build_absolute_uri(obj.author.profile_picture.url)
+                else:
+                    return obj.author.profile_picture.url
+            else:
+                return None
+        except ObjectDoesNotExist:
+            return None
 
     def create(self, validated_data):
         blog_pk = self.context["view"].kwargs.get("blogs_pk") or self.context[
@@ -87,13 +105,18 @@ class CommentsSerializer(serializers.ModelSerializer):
 
 
 class BlogsLikesSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField(read_only=True)  # Add this
+    blog = serializers.StringRelatedField(read_only=True)  # Add this
+
     class Meta:
         model = Likes
-        fields = [
-            "like_status",
-        ]
+        fields = ["author", "blog", "like_status"]  # Include all relevant fields
+        extra_kwargs = {
+            "like_status": {"required": True}  # Ensure this field is required
+        }
 
     def create(self, validated_data):
+        # This is correct! Context is used to set author/blog.
         return Likes.objects.create(
             author=self.context.get("author"),
             blog=self.context.get("blog"),
@@ -123,6 +146,7 @@ class MyBlogsLikesSerializer(serializers.ModelSerializer):
 
 class BlogGallerySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = BlogGallery
         fields = [

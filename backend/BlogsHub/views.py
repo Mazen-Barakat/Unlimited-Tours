@@ -130,7 +130,6 @@ class MyBlogsViewSet(ModelViewSet):
         elif request.method in ["POST", "PUT", "PATCH"]:
             # Check if a like record already exists for the user and blog
             existing_like = Likes.objects.filter(author=author, blog=blog).first()
-            print(blog, author, like_status)
             if existing_like:
                 # If it exists, update the existing record
                 serializer_context = {"author": author, "blog": blog}

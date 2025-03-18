@@ -1,25 +1,25 @@
 import classes from './ToursList.module.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faHeart,
-  faClock,
-  faArrowRight,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faHeart } from '@fortawesome/free-regular-svg-icons';
 
 const ToursList = tours => {
   const navigate = useNavigate();
 
   const tourClickHandler = tour => {
-    navigate(`/tour/${tour.slug}` , { state: { id: tour.id } });
-  }
+    navigate(`/tour/${tour.slug}`, { state: { id: tour.id } });
+  };
 
   return (
     <div className={classes.row}>
       {tours.tours.map((tour, index) => {
         return (
           <div key={index} className={classes.bigList}>
-            <div className={classes.tourItem} onClick={() => tourClickHandler(tour)}>
+            <div
+              className={classes.tourItem}
+              onClick={() => tourClickHandler(tour)}
+            >
               <div className={classes.tourImg}>
                 {tour.tour_cost.discount > 0 ? (
                   <span className={classes.badgeDiscount}>
@@ -28,11 +28,13 @@ const ToursList = tours => {
                 ) : (
                   ''
                 )}
-                <img
-                  src={tour.tour_main_image}
-                  alt='tour'
-                  className={classes.tourImg}
-                />
+                <div className={classes.imageWrapper}>
+                  <img
+                    src={tour.tour_main_image}
+                    alt='tour'
+                    className={classes.tourImg}
+                  />
+                </div>
                 <a className={classes.addWishlist} href='#'>
                   <FontAwesomeIcon icon={faHeart} />
                 </a>
