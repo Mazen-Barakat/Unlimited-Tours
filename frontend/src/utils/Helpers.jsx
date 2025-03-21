@@ -39,3 +39,15 @@ export const calculateTotalCost = (
 
   return finalTotalCost;
 };
+
+export function getAuthToken() {
+  return localStorage.getItem('access_token');
+}
+
+export function checkAuth() {
+  if (localStorage.getItem('access_token')) {
+    return true;
+  } else {
+    return false;
+  }
+}

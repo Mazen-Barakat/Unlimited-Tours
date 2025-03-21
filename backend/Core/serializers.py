@@ -11,4 +11,4 @@ class UserCreateSerializer(BaseUserCreateSerializer):
 
 class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
-        fields = ["id", "email", "username", "first_name", "last_name"]
+        fields = ["id", "email", "username", "first_name", "last_name", "profile_picture"]

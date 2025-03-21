@@ -7,6 +7,7 @@ import BookingPage from './pages/BookingPage/BookingPage';
 import BlogsLayout from './pages/BlogsPage/BlogsLayout/BlogsLayout';
 import Blogs from './pages/BlogsPage/Blogs/Blogs';
 import BlogDetails from './pages/BlogsPage/BlogDetails/BlogDetails';
+import AuthenticationPage from './pages/AuthenticationPage/AuthenticationPage';
 import Loader from './components/Loader/Loader';
 import { useEffect, useState } from 'react';
 
@@ -27,6 +28,14 @@ function App() {
     {
       path: '/',
       element: <HomePage />,
+    },
+    {
+      path: '/signin',
+      element: <AuthenticationPage />,
+    },
+    {
+      path: '/signup',
+      element: <AuthenticationPage />,
     },
     {
       path: '/trip',

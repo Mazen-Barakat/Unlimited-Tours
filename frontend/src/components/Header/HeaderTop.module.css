@@ -100,10 +100,9 @@
   border-radius: 8px;
 }
 
-
 .list {
   visibility: hidden;
-  opacity: 0; 
+  opacity: 0;
   display: block;
   border-radius: 8px;
   box-shadow: 0 3px 24px rgb(0 0 0 /10%);
@@ -121,27 +120,26 @@
 
 .listActive {
   visibility: visible;
-  opacity: 1; 
-  transform: scale(1) translateY(0); 
+  opacity: 1;
+  transform: scale(1) translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .listNotActive {
-  visibility: hidden; 
+  visibility: hidden;
   opacity: 0;
-  transform: scale(0.75) translateY(-21px); 
+  transform: scale(0.75) translateY(-21px);
 }
 
 .lang svg,
 .currency svg {
   margin-left: 5px;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
 
 .iconActive {
-  transform: rotate(180deg); 
+  transform: rotate(180deg);
 }
-
 
 .list li {
   padding-left: 18px;
@@ -173,4 +171,35 @@
 
 .auth a svg {
   margin-right: 5px;
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+}
+
+.logoutButton {
+  background-color: transparent;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  padding-left: 20px;
+
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.logoutButton svg {
+  font-size: 16px;
+}
+
+.logoutButton:hover {
+  color: #7167ff;
+  text-decoration: underline;
+  transition: all 0.3s ease;
 }

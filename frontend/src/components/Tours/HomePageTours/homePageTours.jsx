@@ -10,7 +10,6 @@ const HomePageTours = () => {
     const response = await getTours();
     if (response.status === 200) {
       setTours(response.result.slice(0, 8));
-      console.log(typeof tours, tours);
     } else {
       console.log('Error');
     }

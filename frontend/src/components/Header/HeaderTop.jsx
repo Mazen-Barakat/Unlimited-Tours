@@ -15,10 +15,14 @@ import {
   faSignOutAlt,
   faChevronUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import { checkAuth } from '../../utils/Helpers';
+import { logout } from '../../utils/getData';
 
 const HeaderTop = () => {
   const defaultLang = 'ENG';
   const defaultCurrency = 'USD';
+  const user = checkAuth();
   const [currentLang, setCurrentLang] = useState(defaultLang);
   const [listClasses, setListClasses] = useState(
     `${classes.list} ${classes.listNotActive}`
@@ -43,10 +47,10 @@ const HeaderTop = () => {
   const toggleCurrList = () => {
     if (currListClasses === `${classes.list} ${classes.listNotActive}`) {
       setCurrListClasses(`${classes.list} ${classes.listActive}`);
-      setCurrIconClasses(classes.iconActive); 
+      setCurrIconClasses(classes.iconActive);
     } else {
       setCurrListClasses(`${classes.list} ${classes.listNotActive}`);
-      setCurrIconClasses(''); 
+      setCurrIconClasses('');
     }
   };
 
@@ -158,16 +162,31 @@ const HeaderTop = () => {
           </ul>
         </div>
         <div className={classes.auth}>
-          <a href='#'>
-            {' '}
-            <FontAwesomeIcon icon={faSignInAlt} />
-            Login
-          </a>
-          <a href='#'>
-            {' '}
-            <FontAwesomeIcon icon={faSignOutAlt} />
-            Sign Up
-          </a>
+          {!user ? (
+            // Not authenticated: show sign-in and sign-up links
+            <>
+              <Link to='/signin'>
+                <FontAwesomeIcon icon={faSignInAlt} />
+                Sign In
+              </Link>
+              <Link to='/signup'>
+                <FontAwesomeIcon icon={faSignInAlt} />
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <div className={classes.userProfile}>
+              <button
+                onClick={() => {
+                  logout();
+                }}
+                className={classes.logoutButton}
+              >
+                <FontAwesomeIcon icon={faSignOutAlt} />
+                Log Out
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

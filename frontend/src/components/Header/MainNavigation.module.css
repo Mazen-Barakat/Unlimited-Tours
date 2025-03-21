@@ -73,3 +73,19 @@
   color: #4f4b8b;
   transition: all 0.5s ease-in-out;
 }
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.profileImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  padding: 3px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
