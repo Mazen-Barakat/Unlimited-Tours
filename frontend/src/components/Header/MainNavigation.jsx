@@ -73,24 +73,24 @@ const MainNavigation = props => {
             </Link>
           </li>
           <li>
-            <a href='/blogs'>
+            <Link to='/blogs'>
               <FontAwesomeIcon icon={faPenToSquare} /> Blogs
-            </a>
+            </Link>
           </li>
           <li>
-            <a href='/'>
+            <Link to='/'>
               <FontAwesomeIcon icon={faPhoneVolume} /> Contact
-            </a>
+            </Link>
           </li>
           <li className={classes.auth}>
             {user ? (
-              <div className={classes.userProfile}>
+              <Link to='/profile' className={classes.userProfile}>
                 <img
                   src={profile?.profile_picture || 'src/assets/auth.png'}
                   alt='User Profile'
                   className={classes.profileImage}
                 />
-              </div>
+              </Link>
             ) : (
               ''
             )}

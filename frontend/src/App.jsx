@@ -1,29 +1,20 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
-import TourPage from './pages/TourPage/TourPage'; 
+import TourPage from './pages/TourPage/TourPage';
 import TourDetailsPage from './pages/TourDetailsPage/TourDetailsPage';
 import BookingPage from './pages/BookingPage/BookingPage';
 import BlogsLayout from './pages/BlogsPage/BlogsLayout/BlogsLayout';
 import Blogs from './pages/BlogsPage/Blogs/Blogs';
 import BlogDetails from './pages/BlogsPage/BlogDetails/BlogDetails';
 import AuthenticationPage from './pages/AuthenticationPage/AuthenticationPage';
-import Loader from './components/Loader/Loader';
-import { useEffect, useState } from 'react';
+import ProfileLayout from './pages/ProfilePage/ProfileLayout/ProfileLayout';
+import Profile from './pages/ProfilePage/Profile/Profile';
+import MyBooking from './pages/ProfilePage/MyBooking/MyBooking';
+import Notifications from './pages/ProfilePage/Notifications/Notifications';
+import Settings from './pages/ProfilePage/Settings/Settings';
 
 function App() {
-  /*const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000); 
-  }, []);
-
-  if (loading) {
-    return <Loader />; 
-  }*/
-
   const Router = createBrowserRouter([
     {
       path: '/',
@@ -68,9 +59,31 @@ function App() {
         {
           path: ':blogId',
           element: <BlogDetails />,
-        }
+        },
       ],
-    }
+    },
+    {
+      path: '/profile',
+      element: <ProfileLayout />,
+      children: [
+        {
+          index: true,
+          element: <Profile />,
+        },
+        {
+          path: 'my-booking',
+          element: <MyBooking />,
+        },
+        {
+          path: 'notification',
+          element: <Notifications />,
+        },
+        {
+          path: 'settings',
+          element: <Settings />,
+        },
+      ],
+    },
   ]);
 
   return (

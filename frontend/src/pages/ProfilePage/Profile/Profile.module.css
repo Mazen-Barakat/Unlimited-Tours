@@ -1,0 +1,31 @@
+.profileCard {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+}
+
+.profileTitle {
+  font-size: 22px;
+  color: #4f4b8b;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.profileInfo {
+  flex: 0 0 auto;
+  width: 50%;
+}
+
+.profileList li {
+  margin: 12px 0;
+  font-weight: 600;
+  color: #4f4b8b;
+}
+
+.profileList li span {
+  float: right;
+  font-weight: 500;
+}
