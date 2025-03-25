@@ -174,6 +174,7 @@ const AuthenticationPage = () => {
               {/* Input Fields */}
               {formConfig[currentForm].inputFields.map((field, index) => (
                 <input
+                  className={classes.input}
                   key={index}
                   type={field.type}
                   placeholder={field.placeholder}

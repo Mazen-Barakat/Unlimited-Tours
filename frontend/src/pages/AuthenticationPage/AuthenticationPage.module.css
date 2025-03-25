@@ -218,7 +218,7 @@
 }
 
 /* Input styles */
-input {
+.input {
   background-color: #eee;
   border: none;
   margin: 8px 0;
@@ -231,7 +231,7 @@ input {
   transition: background-color 0.3s ease;
 }
 
-input:focus {
+.input:focus {
   background-color: #fff;
   border: 1px solid #512da8;
 }
