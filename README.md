@@ -13,7 +13,9 @@
 
 
 ## 📽️ Project Demo (Video)
-https://github.com/user-attachments/assets/fdc6fde9-3b3f-4725-9ae1-426ee77f7d13
+
+https://github.com/user-attachments/assets/00dc18ba-199f-4f16-a4cb-4522def15eb3
+
 
 ---
 
